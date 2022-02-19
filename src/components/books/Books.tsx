@@ -29,7 +29,7 @@ function Books() {
     >
         {books.map((book) => {
           return (
-            <Grid item md={3} xs={6} sx={{padding: "1rem"}} key={book.title}>
+            <Grid item md={3} xs={6} sx={{padding: "1rem"}} >
               <Book title={book.title}></Book>
             </Grid>
           )
