@@ -68,7 +68,7 @@ const SignupForm = () => {
     gender: valueGender,
     email: "",
     password: "",
-    confirmation_password: "",
+    password_confirmation: "",
   });
 
   const handleAccountSignUp = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,10 +85,10 @@ const SignupForm = () => {
         user: input,
       })
       .then(function (response) {
-        
+        console.log(response)
       })
       .catch(function (error) {
-        console.log(error.response.data)
+        console.log(error.response.data.errors)
         setErrors(error.response.data.errors);
       });
   };
