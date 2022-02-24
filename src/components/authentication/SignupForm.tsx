@@ -16,23 +16,18 @@ import { LocalizationProvider } from "@mui/lab";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import { DateTime } from "luxon";
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
 const genders = [{ value: "Male" }, { value: "Female" }];
 
-interface ErrorProps{
-  
-    first_name: String[],
-    last_name: String[],
-    dob: String[],
-    gender: String[],
-    email: String[],
-    password: String[],
-    password_confirmation: String[]
-  
-};
-  
-
-
+interface ErrorProps {
+  first_name: String[];
+  last_name: String[];
+  dob: String[];
+  gender: String[];
+  email: String[];
+  password: String[];
+  password_confirmation: String[];
+}
 
 const SignupForm = () => {
   const PaperStyle = {
@@ -77,22 +72,27 @@ const SignupForm = () => {
   };
 
   const [errors, setErrors] = React.useState<ErrorProps | null>();
-
+  const navigate = useNavigate();
   const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
     await axios
       .post("http://localhost:3000/sign-up", {
         user: input,
       })
-      .then(function (response) {
-        console.log(response)
+      .then(async function (response) {
+        if(response.data.token)
+        {
+          axios.defaults.headers.common.Authorization = `Bearer ${response.data.token}`;
+          const res = await axios.get('http://localhost:3000/auth');
+          navigate('/')
+        }
+        
       })
       .catch(function (error) {
-        console.log(error.response.data.errors)
+        console.log(error.response.data.errors);
         setErrors(error.response.data.errors);
       });
   };
-
 
   return (
     <Grid sx={{ marginTop: "2rem" }}>
@@ -113,23 +113,27 @@ const SignupForm = () => {
           </Typography>
         </Box>
         <TextField
-          error={errors?.hasOwnProperty('first_name')}
+          error={errors?.hasOwnProperty("first_name")}
           id="first_name"
           label="First Name"
           placeholder="Enter First Name"
           variant="standard"
-          helperText={errors?.hasOwnProperty('first_name') ? errors.first_name : ''}
+          helperText={
+            errors?.hasOwnProperty("first_name") ? errors.first_name : ""
+          }
           onChange={handleAccountSignUp}
           required
         />
         <TextField
-          error={errors?.hasOwnProperty('last_name')}
+          error={errors?.hasOwnProperty("last_name")}
           id="last_name"
           label="Last Name"
           placeholder="Enter Last Name"
           variant="standard"
           onChange={handleAccountSignUp}
-          helperText={errors?.hasOwnProperty('last_name') ? errors.last_name : ''}
+          helperText={
+            errors?.hasOwnProperty("last_name") ? errors.last_name : ""
+          }
           required
           sx={{ marginLeft: "1rem" }}
         />
@@ -170,36 +174,42 @@ const SignupForm = () => {
           ))}
         </TextField>
         <TextField
-          error={errors?.hasOwnProperty('email')}
+          error={errors?.hasOwnProperty("email")}
           id="email"
           label="Email"
           placeholder="Enter Email"
           variant="standard"
           onChange={handleAccountSignUp}
-          helperText={errors?.hasOwnProperty('email') ? errors.email : ''}
+          helperText={errors?.hasOwnProperty("email") ? errors.email : ""}
           fullWidth
           required
         />
         <TextField
-          error={errors?.hasOwnProperty('password')}
+          error={errors?.hasOwnProperty("password")}
           id="password"
           label="Password"
           placeholder="Enter Password"
           variant="standard"
           type="password"
-          helperText={errors?.hasOwnProperty('password') ? errors.password[1] : ''}
+          helperText={
+            errors?.hasOwnProperty("password") ? errors.password[1] : ""
+          }
           onChange={handleAccountSignUp}
           fullWidth
           required
         />
         <TextField
-          error={errors?.hasOwnProperty('password_confirmation')}
-          id="confirmation_password"
+          error={errors?.hasOwnProperty("password_confirmation")}
+          id="password_confirmation"
           label="Confirm Password"
           placeholder="Confirm password"
           variant="standard"
           type="password"
-          helperText={errors?.hasOwnProperty('password_confirmation') ? errors.password_confirmation : ''}
+          helperText={
+            errors?.hasOwnProperty("password_confirmation")
+              ? errors.password_confirmation
+              : ""
+          }
           onChange={handleAccountSignUp}
           fullWidth
           required
