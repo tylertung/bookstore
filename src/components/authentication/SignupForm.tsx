@@ -17,6 +17,8 @@ import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import { DateTime } from "luxon";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../hook";
+import {register} from "../../redux/actions/authAction"
 const genders = [{ value: "Male" }, { value: "Female" }];
 
 interface ErrorProps {
@@ -73,26 +75,16 @@ const SignupForm = () => {
 
   const [errors, setErrors] = React.useState<ErrorProps | null>();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const userRegister = useAppSelector((state) => state.userLogin);
+  const {error,userInfo} = userRegister;
   const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-    await axios
-      .post("http://localhost:3000/sign-up", {
-        user: input,
-      })
-      .then(async function (response) {
-        if(response.data.token)
-        {
-          axios.defaults.headers.common.Authorization = `Bearer ${response.data.token}`;
-          const res = await axios.get('http://localhost:3000/auth');
-          navigate('/')
-        }
-        
-      })
-      .catch(function (error) {
-        console.log(error.response.data.errors);
-        setErrors(error.response.data.errors);
-      });
+    dispatch(register(input));
   };
+  
+  if(userInfo)
+    navigate('/');
 
   return (
     <Grid sx={{ marginTop: "2rem" }}>

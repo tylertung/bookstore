@@ -11,19 +11,9 @@ import {
 import React from "react";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import axios from "axios";
-import {useNavigate} from 'react-router-dom'
-
-interface UserProps {
-  first_name: string,
-  last_name: string,
-  username: string,
-  dob: string | undefined,
-  gender: string,
-  email:string,
-  password: string
-}
-
-
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../hook";
+import { login } from "../../redux/actions/authAction";
 
 const LoginForm = () => {
   const PaperStyle = {
@@ -43,27 +33,17 @@ const LoginForm = () => {
     setInput({ ...input, [id]: value });
   };
   const navigate = useNavigate();
-  const [user,setUser] = React.useState<UserProps | undefined>();
+
+  const dispatch = useAppDispatch();
+  const userLogin = useAppSelector((state) => state.userLogin);
+  const { error, userInfo } = userLogin;
+
   const handleLogin = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-    await axios
-      .post("http://localhost:3000/login", {
-        user: input,
-      })
-      .then(async function (response) {
-        if(response.data.token)
-        {
-          axios.defaults.headers.common.Authorization = `Bearer ${response.data.token}`;
-          const res = await axios.get('http://localhost:3000/auth');
-          setUser(res.data.user);
-          navigate('/')
-          
-        }
-      })
-      .catch(function (error) {
-        console.log(error.response);
-      });
+    dispatch(login(input));
   };
+
+  if (userInfo) navigate("/");
 
   return (
     <Grid sx={{ marginTop: "2rem" }}>

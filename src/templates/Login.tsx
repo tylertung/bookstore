@@ -1,14 +1,12 @@
-import React from 'react'
-import LoginForm from '../components/authentication/LoginForm'
-import Navbar from '../components/navbar/Navbar'
+import React from "react";
+import LoginForm from "../components/authentication/LoginForm";
 
 const Login = () => {
   return (
-   <>
-    <Navbar/>
-    <LoginForm/>
-   </>
-  )
-}
+    <>
+      <LoginForm />
+    </>
+  );
+};
 
-export default Login
+export default Login;
