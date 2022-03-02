@@ -78,3 +78,11 @@ export const register =
       });
     }
   };
+
+
+export const logout = () => (dispatch: AppDispatch) => {
+  localStorage.removeItem(TOKEN_KEY);
+  localStorage.removeItem(USER_INFO);
+  dispatch({type: USER_LOGOUT})
+  document.location.href = '/';
+}
