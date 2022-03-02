@@ -1,7 +1,7 @@
 import { AppBar, Button, Link, Toolbar, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import React from "react";
-import { useAppDispatch, useAppSelector } from "../../hook";
+import React, { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../base/hook";
 
 const useStyles = makeStyles({
   buttonStyle: {
@@ -15,9 +15,10 @@ const useStyles = makeStyles({
 
 const Navbar = () => {
   const classes = useStyles();
-  const dispatch = useAppDispatch();
+
   const userLogin = useAppSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+  
 
   return (
     <AppBar position="sticky">

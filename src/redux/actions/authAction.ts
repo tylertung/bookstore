@@ -1,8 +1,7 @@
-import axios from "axios";
-import * as types from "../../constant/userRequest";
+import axiosInstance from "../../base/axios";
 import * as urls from "../../constant/urlRequest";
 import type { AppDispatch } from "../../store";
-
+import { TOKEN_KEY, USER_INFO } from "../../constant/common";
 interface loginProps {
   email: string;
   password: string;
@@ -18,62 +17,63 @@ interface registerProps {
   password: string;
 }
 
+export const USER_LOGIN_REQUEST = "USER_LOGIN_REQUEST";
+export const USER_LOGIN_SUCCESS = "USER_LOGIN_SUCCESS";
+export const USER_LOGIN_FAILURE = "USER_LOGIN FAILURE";
+export const USER_LOGOUT = "USER_LOGOUT";
+
+export const USER_REGISTER_REQUEST = "USER_REGISTER_REQUEST";
+export const USER_REGISTER_SUCCESS = "USER_REGISTER_SUCCESS";
+export const USER_REGISTER_FAILURE = "USER_REGISTER_FAILURE";
+
 export const login = (input: loginProps) => async (dispatch: AppDispatch) => {
-  dispatch({ type: types.USER_LOGIN_REQUEST });
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  };
-  await axios
-    .post(`${urls.baseUrl}${urls.loginUrl}`, { user: input }, config)
-    .then(async function (response) {
-      if (response.data.token) {
-        axios.defaults.headers.common.Authorization = `Bearer ${response.data.token}`;
-        const res = await axios.get(`${urls.baseUrl}${urls.authUrl}`);
-        dispatch({
-          type: types.USER_LOGIN_SUCCESS,
-          payload: res.data.user,
-        });
-        localStorage.setItem("userInfo", JSON.stringify(res.data.user));
-      }
-    })
-    .catch(function (error) {
-      dispatch({
-        type: types.USER_LOGIN_FAILURE,
-        payload: error.response.data.error,
-      });
+  dispatch({ type: USER_LOGIN_REQUEST });
+
+  try {
+    const {
+      data: { token },
+    } = await axiosInstance.post<{ token: string }>(`${urls.loginUrl}`, {
+      user: input,
     });
+
+    localStorage.setItem(TOKEN_KEY, JSON.stringify(token));
+
+    const res = await axiosInstance.get(`${urls.authUrl}`);
+
+    dispatch({
+      type: USER_LOGIN_SUCCESS,
+      payload: res.data.user,
+    });
+
+    localStorage.setItem(USER_INFO, JSON.stringify(res.data.user));
+  } catch (error: any) {
+    dispatch({
+      type: USER_LOGIN_FAILURE,
+      payload: error.response,
+    });
+  }
 };
 
 export const register =
   (input: registerProps) => async (dispatch: AppDispatch) => {
-    dispatch({ type: types.USER_REGISTER_REQUEST });
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    await axios
-      .post(`${urls.baseUrl}${urls.registerUrl}`, { user: input }, config)
-      .then(async function (response) {
-        dispatch({
-          type: types.USER_REGISTER_SUCCESS,
-          payload: response.data,
-        })
-        if (response.data.token) {
-          axios.defaults.headers.common.Authorization = `Bearer ${response.data.token}`;
-          const res = await axios.get(`${urls.baseUrl}${urls.authUrl}`);
-          dispatch({
-            type: types.USER_LOGIN_SUCCESS,
-            payload: res.data.user,
-          });
-        }
-      })
-      .catch(function (error) {
-        dispatch({
-          type: types.USER_REGISTER_FAILURE,
-          payload: error.response.data.error,
-        });
+    dispatch({ type: USER_REGISTER_REQUEST });
+    try {
+      const {
+        data: { token },
+      } = await axiosInstance.post<{ token: string }>(`${urls.registerUrl}`, {
+        user: input,
       });
+      localStorage.setItem(TOKEN_KEY, JSON.stringify(token));
+      const res = await axiosInstance.get(`${urls.authUrl}`);
+      dispatch({
+        type: USER_LOGIN_SUCCESS,
+        payload: res.data.user,
+      });
+      localStorage.setItem(USER_INFO, JSON.stringify(res.data.user));
+    } catch (error: any) {
+      dispatch({
+        type: USER_REGISTER_FAILURE,
+        payload: error.response,
+      });
+    }
   };

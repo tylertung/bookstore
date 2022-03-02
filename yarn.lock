@@ -2063,6 +2063,11 @@
   resolved "https://registry.yarnpkg.com/@types/json5/-/json5-0.0.29.tgz#ee28707ae94e11d2b827bcbe5270bcea7f3e71ee"
   integrity sha1-7ihweulOEdK4J7y+UnC86n8+ce4=
 
+"@types/jsrsasign@^9.0.3":
+  version "9.0.3"
+  resolved "https://registry.yarnpkg.com/@types/jsrsasign/-/jsrsasign-9.0.3.tgz#f51120f0e3ef8122d657257438dd19269e777c6e"
+  integrity sha512-asLFAXUBdp4T8tSfqlGai+ax7nCTtMzyLELfnmb0L3QXXStDo1NzYtgbYlGXTp8EokBjZYmuH3x42ce+XHms4g==
+
 "@types/luxon@^2.0.9":
   version "2.0.9"
   resolved "https://registry.yarnpkg.com/@types/luxon/-/luxon-2.0.9.tgz#782a0edfa6d699191292c13168bd496cd66b87c6"
@@ -5897,6 +5902,11 @@ json5@^2.1.2, json5@^2.2.0:
   dependencies:
     minimist "^1.2.5"
 
+"jsonc-parser@>= 0.0.1":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/jsonc-parser/-/jsonc-parser-3.0.0.tgz#abdd785701c7e7eaca8a9ec8cf070ca51a745a22"
+  integrity sha512-fQzRfAbIBnR0IQvftw9FJveWiHp72Fg20giDrHz6TdfB12UH/uue0D3hm57UB5KgAVuniLMCaS8P1IMj9NR7cA==
+
 jsonfile@^6.0.1:
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/jsonfile/-/jsonfile-6.1.0.tgz#bc55b2634793c679ec6403094eb13698a6ec0aae"
@@ -5910,6 +5920,19 @@ jsonpointer@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/jsonpointer/-/jsonpointer-5.0.0.tgz#f802669a524ec4805fa7389eadbc9921d5dc8072"
   integrity sha512-PNYZIdMjVIvVgDSYKTT63Y+KZ6IZvGRNNWcxwD+GNnUz1MKPfv30J8ueCjdwcN0nDx2SlshgyB7Oy0epAzVRRg==
+
+jsrsasign-util@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/jsrsasign-util/-/jsrsasign-util-1.0.5.tgz#51ce7863171a6d05e5f563546c54a3eacda4febb"
+  integrity sha512-e5Kp8aaT5GH2c5X8j4uaJruYmT4GcnaGb47nw8m60YqPywtnOtTISZ9hZgtZ3a+jh7B27bU2LCf3Y32wZyfhtQ==
+  dependencies:
+    jsonc-parser ">= 0.0.1"
+    jsrsasign ">= 4.8.2"
+
+"jsrsasign@>= 4.8.2", jsrsasign@^10.5.8:
+  version "10.5.8"
+  resolved "https://registry.yarnpkg.com/jsrsasign/-/jsrsasign-10.5.8.tgz#df269e5694ebb53245c4dadfca68ee2fc8aa41ec"
+  integrity sha512-ewFUGPZJujIR9j84Q5LEzPTG4D1qQZ4CjJrgHfMEAAiArkC3xfdgNP0ZAXXxXbb+K8Phw15soOIJ8bX3+usEdQ==
 
 jss-plugin-camel-case@^10.8.2:
   version "10.9.0"

@@ -8,11 +8,10 @@ import {
   Button,
   Link,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../hook";
+import { useAppDispatch, useAppSelector } from "../../base/hook";
 import { login } from "../../redux/actions/authAction";
 
 const LoginForm = () => {
@@ -36,15 +35,18 @@ const LoginForm = () => {
 
   const dispatch = useAppDispatch();
   const userLogin = useAppSelector((state) => state.userLogin);
-  const { error, userInfo } = userLogin;
+  const { errors, userInfo } = userLogin;
 
   const handleLogin = async (event: React.SyntheticEvent) => {
     event.preventDefault();
     dispatch(login(input));
   };
 
-  if (userInfo) navigate("/");
-
+  useEffect(() => {
+    if(userInfo)
+      navigate("/");
+  },[userInfo])
+  
   return (
     <Grid sx={{ marginTop: "2rem" }}>
       <Paper elevation={10} style={PaperStyle}>
