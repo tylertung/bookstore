@@ -75,19 +75,17 @@ const SignupForm = () => {
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const userRegister = useAppSelector((state) => state.userLogin);
+  const userRegister = useAppSelector((state) => state.userRegister);
   const { errors, userInfo } = userRegister;
   const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-    dispatch(register(input));
+    await register(input)(dispatch);
   };
 
   useEffect(() => {
-    if(userInfo)
-      navigate('/')
+    if (userInfo) navigate("/");
   });
 
-  
   return (
     <Grid sx={{ marginTop: "2rem" }}>
       <Paper elevation={10} style={PaperStyle}>

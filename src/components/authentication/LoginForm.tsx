@@ -39,14 +39,13 @@ const LoginForm = () => {
 
   const handleLogin = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-    dispatch(login(input));
+    await login(input)(dispatch);
   };
 
   useEffect(() => {
-    if(userInfo)
-      navigate("/");
-  },[userInfo])
-  
+    if (userInfo) navigate("/");
+  }, [userInfo]);
+
   return (
     <Grid sx={{ marginTop: "2rem" }}>
       <Paper elevation={10} style={PaperStyle}>

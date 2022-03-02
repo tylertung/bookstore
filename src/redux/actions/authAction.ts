@@ -2,6 +2,7 @@ import axiosInstance from "../../base/axios";
 import * as urls from "../../constant/urlRequest";
 import type { AppDispatch } from "../../store";
 import { TOKEN_KEY, USER_INFO } from "../../constant/common";
+
 interface loginProps {
   email: string;
   password: string;
@@ -35,9 +36,9 @@ export const login = (input: loginProps) => async (dispatch: AppDispatch) => {
     } = await axiosInstance.post<{ token: string }>(`${urls.loginUrl}`, {
       user: input,
     });
-
-    localStorage.setItem(TOKEN_KEY, JSON.stringify(token));
-
+    
+    localStorage.setItem(TOKEN_KEY, token);
+  
     const res = await axiosInstance.get(`${urls.authUrl}`);
 
     dispatch({
@@ -63,7 +64,7 @@ export const register =
       } = await axiosInstance.post<{ token: string }>(`${urls.registerUrl}`, {
         user: input,
       });
-      localStorage.setItem(TOKEN_KEY, JSON.stringify(token));
+      localStorage.setItem(TOKEN_KEY, token);
       const res = await axiosInstance.get(`${urls.authUrl}`);
       dispatch({
         type: USER_LOGIN_SUCCESS,
