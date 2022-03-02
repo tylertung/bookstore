@@ -2,9 +2,13 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Book from "./Book";
 import Grid from "@mui/material/Grid";
+import CreateBook from "./CreateBook";
+
+
 function Books() {
   const [books, setBooks] = useState([
     {
+      id: 0,
       title: "",
       description: "",
       author_id: 0,
@@ -31,8 +35,8 @@ function Books() {
     >
       {books.map((book) => {
         return (
-          <Grid item md={3} xs={6} sx={{ padding: "1rem" }}>
-            <Book title={book.title}></Book>
+          <Grid item md={3} xs={6} sx={{ padding: "1rem" }} key={book.id}>
+            <Book title={book.title} ></Book>
           </Grid>
         );
       })}

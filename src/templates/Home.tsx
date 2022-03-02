@@ -1,18 +1,20 @@
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import Books from '../components/books/Books'
-import Navbar from '../components/navbar/Navbar'
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import Books from "../components/books/Books";
+import CreateBook from "../components/books/CreateBook";
+import { useAppSelector } from "../base/hook";
 function Home() {
+  const userLogin = useAppSelector((state) => state.userLogin)
+  const {userInfo} = userLogin;
+
   
-
-
+  
   return (
     <>
-      <Navbar></Navbar>
+      {userInfo && userInfo.role === 'admin' ? (<CreateBook/>) : <></>}
       <Books></Books>
     </>
-    
-  )
+  );
 }
 
-export default Home
+export default Home;
