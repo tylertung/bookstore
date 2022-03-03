@@ -21,16 +21,6 @@ import { useAppDispatch, useAppSelector } from "../../base/hook";
 import { register } from "../../redux/actions/authAction";
 const genders = [{ value: "Male" }, { value: "Female" }];
 
-interface ErrorProps {
-  first_name: String[];
-  last_name: String[];
-  dob: String[];
-  gender: String[];
-  email: String[];
-  password: String[];
-  password_confirmation: String[];
-}
-
 const SignupForm = () => {
   const PaperStyle = {
     height: "70vh",
@@ -84,7 +74,7 @@ const SignupForm = () => {
 
   useEffect(() => {
     if (userInfo) navigate("/");
-  });
+  }, [dispatch, navigate, userInfo]);
 
   return (
     <Grid sx={{ marginTop: "2rem" }}>

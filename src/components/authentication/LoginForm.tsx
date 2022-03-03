@@ -42,10 +42,9 @@ const LoginForm = () => {
     await login(input)(dispatch);
   };
 
-  
   useEffect(() => {
     if (userInfo) navigate("/");
-  }, [userInfo]);
+  }, [dispatch, navigate, userInfo]);
 
   return (
     <Grid sx={{ marginTop: "2rem" }}>
@@ -66,21 +65,25 @@ const LoginForm = () => {
           </Typography>
         </Box>
         <TextField
+          error={errors != null}
           id="email"
           label="Email"
           placeholder="Enter Email"
           variant="standard"
           onChange={handleInput}
+          helperText={errors ? errors : ""}
           fullWidth
           required
         />
         <TextField
+          error={errors != null}
           id="password"
           label="Password"
           placeholder="Enter Password"
           variant="standard"
           type="password"
           onChange={handleInput}
+          helperText={errors ? errors : ""}
           fullWidth
           required
         />

@@ -30,7 +30,7 @@ export const createBook =
     } catch (error: any) {
       dispatch({
         type: BOOK_CREATE_FAILURE,
-        payload: error.response,
+        payload: error.message,
       });
     }
   };
@@ -46,7 +46,7 @@ export const getListBook = () => async (dispatch: AppDispatch) => {
   } catch (error: any) {
     dispatch({
       type: BOOK_LIST_FAILURE,
-      payload: error.response,
+      payload: error.message,
     });
   }
 };

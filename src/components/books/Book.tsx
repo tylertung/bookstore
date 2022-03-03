@@ -1,11 +1,10 @@
 import React from "react";
-import PropTypes from "prop-types";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import coverBook from "../../assets/images/coverBook.jpg";
-import { styled } from "@mui/material/styles";
+
 
 
 interface Props {

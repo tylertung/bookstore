@@ -36,9 +36,9 @@ export const login = (input: loginProps) => async (dispatch: AppDispatch) => {
     } = await axiosInstance.post<{ token: string }>(`${urls.loginUrl}`, {
       user: input,
     });
-    
+
     localStorage.setItem(TOKEN_KEY, token);
-  
+
     const res = await axiosInstance.get(`${urls.authUrl}`);
 
     dispatch({
@@ -50,9 +50,8 @@ export const login = (input: loginProps) => async (dispatch: AppDispatch) => {
   } catch (error: any) {
     dispatch({
       type: USER_LOGIN_FAILURE,
-      payload: error.response,
+      payload: error.message,
     });
-    
   }
 };
 
@@ -65,8 +64,11 @@ export const register =
       } = await axiosInstance.post<{ token: string }>(`${urls.registerUrl}`, {
         user: input,
       });
+
       localStorage.setItem(TOKEN_KEY, token);
+
       const res = await axiosInstance.get(`${urls.authUrl}`);
+
       dispatch({
         type: USER_LOGIN_SUCCESS,
         payload: res.data.user,
@@ -75,15 +77,14 @@ export const register =
     } catch (error: any) {
       dispatch({
         type: USER_REGISTER_FAILURE,
-        payload: error.response,
+        payload: error.message,
       });
     }
   };
 
-
 export const logout = () => (dispatch: AppDispatch) => {
   localStorage.removeItem(TOKEN_KEY);
   localStorage.removeItem(USER_INFO);
-  dispatch({type: USER_LOGOUT})
-  document.location.href = '/';
-}
+  dispatch({ type: USER_LOGOUT });
+  document.location.href = "/";
+};
