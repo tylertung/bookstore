@@ -1,6 +1,10 @@
 import { createStore } from "redux";
-import { USER_INFO } from "../src/constant/common";
-import { ListBookProps, LoginProps } from "./constant/types";
+import {
+  createBookProps,
+  ListBookProps,
+  LoginProps,
+  OneBookProps,
+} from "./constant/types";
 import { reducer } from "./redux/reducers/combinReducer";
 
 export const store = createStore(
@@ -13,6 +17,8 @@ export interface RootState {
   userLogin: LoginProps;
   userRegister: LoginProps;
   bookList: ListBookProps;
+  createBook: createBookProps;
+  oneBook: OneBookProps;
 }
 
 export type AppDispatch = typeof store.dispatch;

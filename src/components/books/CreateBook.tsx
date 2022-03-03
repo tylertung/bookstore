@@ -8,8 +8,9 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import React from "react";
-import { useAppSelector } from "../../base/hook";
+import { useAppDispatch, useAppSelector } from "../../base/hook";
 import axios from "axios";
+import { createBook } from "../../redux/actions/bookAction";
 
 interface bookProps {
   title: string;
@@ -44,34 +45,15 @@ const CreateBook = () => {
     setInput({ ...input, [id]: value });
   };
 
-
-  const token = localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token') || '{}') : null
-
+  const dispatch = useAppDispatch();
+  const bookCreated = useAppSelector((state) => state.createBook);
+  const {errors, success} = bookCreated;
   const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      common: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    await axios
-      .post(
-        "http://localhost:3000/books",
-        {
-          book: input,
-        },
-        config
-      )
-      .then(function (response) {
-        console.log("created success");
-      })
-      .catch(function (error) {
-        console.log(error.response);
-      });
+    createBook(input)(dispatch);
   };
+
+  console.log(errors);
 
   return (
     <>

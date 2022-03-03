@@ -9,7 +9,7 @@ export interface UserProps {
   role: string;
 }
 
-interface Er {
+interface UserEr {
   first_name: string;
   last_name: string;
   username: string;
@@ -19,7 +19,7 @@ interface Er {
 }
 
 export interface LoginProps {
-  errors: Partial<Er> | null;
+  errors: Partial<UserEr> | null;
   userInfo: UserProps | null;
 }
 
@@ -31,7 +31,22 @@ export interface BookProps {
   genres: [{ name: string }];
 }
 
-export interface ListBookProps{
-  errors: Partial<Er> | null,
-  books: BookProps[] | null,
+export interface BookEr {
+  title: string | null;
+  description: string | null;
+  author_id: string | null;
+}
+export interface OneBookProps {
+  errors: Partial<BookEr> | null;
+  book: BookProps | null;
+}
+
+export interface createBookProps{
+  errors: Partial<BookEr> | null,
+  success: string | null
+}
+
+export interface ListBookProps {
+  errors: Partial<BookEr> | null;
+  books: BookProps[] | null;
 }

@@ -6,7 +6,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import coverBook from "../../assets/images/coverBook.jpg";
 import { styled } from "@mui/material/styles";
-import "../../assets/styles/Book.css";
+
 
 interface Props {
   title: string;

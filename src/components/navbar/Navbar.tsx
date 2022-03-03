@@ -1,8 +1,9 @@
-import { AppBar, Button, Link, Toolbar, Menu, MenuItem } from "@mui/material";
+import { AppBar, Button, Toolbar, Menu, MenuItem } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../base/hook";
 import { logout } from "../../redux/actions/authAction";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
   buttonStyle: {
@@ -17,17 +18,20 @@ const useStyles = makeStyles({
 const Navbar = () => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
+
   const userLogin = useAppSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
-  
+
   const handleClose = () => {
     setAnchorEl(null);
-  }
+  };
 
   const handleLogOut = () => {
     setAnchorEl(null);
@@ -36,19 +40,7 @@ const Navbar = () => {
   return (
     <AppBar position="sticky">
       <Toolbar>
-        <Link
-          href="/"
-          underline="none"
-          variant="h5"
-          sx={{
-            color: "white",
-            flexGrow: 1,
-            margin: "1rem",
-            fontWeight: "bold",
-          }}
-        >
-          BookStore
-        </Link>
+        <Link to="/" style={{textDecoration: 'none', flex: "1", color: "white", fontSize: "1.5rem", fontWeight: 'bold'}}>BookStore</Link>
         {userInfo ? (
           <>
             <Button
@@ -72,11 +64,10 @@ const Navbar = () => {
             >
               <MenuItem onClick={handleLogOut}>Logout</MenuItem>
             </Menu>
-            
           </>
         ) : (
           <>
-            <Link href="/sign-in" underline="none">
+            <Link to="/sign-in" style={{textDecoration: 'none'}}>
               <Button
                 variant="outlined"
                 sx={{
@@ -89,7 +80,7 @@ const Navbar = () => {
                 Log in
               </Button>
             </Link>
-            <Link href="/registration" underline="none">
+            <Link to="/registration" style={{textDecoration: 'none'}}>
               <Button variant="contained" color="info">
                 Sign up
               </Button>

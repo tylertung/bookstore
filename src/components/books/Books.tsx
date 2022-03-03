@@ -13,7 +13,7 @@ function Books() {
 
   useEffect(() => {
     getListBook()(dispatch);
-  }, []);
+  }, [dispatch]);
 
   return (
     <Grid
