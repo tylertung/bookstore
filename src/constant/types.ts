@@ -1,4 +1,4 @@
-export interface UserProps {
+export interface UserStates {
   id: number;
   first_name: string;
   last_name: string;
@@ -18,12 +18,14 @@ interface UserEr {
   password_confirmation: string;
 }
 
-export interface LoginProps {
+export interface LoginStates {
+  authorizing: boolean;
+  authorized: boolean;
   errors: Partial<UserEr> | null;
-  userInfo: UserProps | null;
+  userInfo: UserStates | null;
 }
 
-export interface BookProps {
+export interface BookStates {
   id: number;
   title: string;
   author_id: number;
@@ -36,17 +38,17 @@ export interface BookEr {
   description: string | null;
   author_id: string | null;
 }
-export interface OneBookProps {
+export interface OneBookStates {
   errors: Partial<BookEr> | null;
-  book: BookProps | null;
+  book: BookStates | null;
 }
 
-export interface createBookProps{
-  errors: Partial<BookEr> | null,
-  success: string | null
+export interface createBookStates {
+  errors: Partial<BookEr> | null;
+  success: string | null;
 }
 
-export interface ListBookProps {
+export interface ListBookStates {
   errors: Partial<BookEr> | null;
-  books: BookProps[] | null;
+  books: BookStates[] | null;
 }

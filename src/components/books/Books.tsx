@@ -1,17 +1,17 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Book from "./Book";
 import Grid from "@mui/material/Grid";
 import { useAppDispatch, useAppSelector } from "../../base/hook";
-import { getListBook } from "../../redux/actions/bookAction";
+import { getListBook, getDetailBook } from "../../redux/book/bookAction";
+import { Link } from "react-router-dom";
+import * as urls from "../../constant/urlRequest";
 
 function Books() {
   const dispatch = useAppDispatch();
 
-  const bookList = useAppSelector((state) => state.bookList);
-  const { books } = bookList;
+  const { books } = useAppSelector((state) => state.bookList);
 
-  useEffect(() => {
+  React.useEffect(() => {
     getListBook()(dispatch);
   }, [dispatch]);
 
@@ -26,7 +26,12 @@ function Books() {
       {books?.map((book) => {
         return (
           <Grid item md={3} xs={6} sx={{ padding: "1rem" }} key={book.id}>
-            <Book title={book.title}></Book>
+            <Link
+              to={`${urls.booksUrl}/${book.id}`}
+              style={{ textDecoration: "none" }}
+            >
+              <Book title={book.title}></Book>
+            </Link>
           </Grid>
         );
       })}

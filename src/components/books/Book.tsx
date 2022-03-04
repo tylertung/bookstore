@@ -5,8 +5,6 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import coverBook from "../../assets/images/coverBook.jpg";
 
-
-
 interface Props {
   title: string;
 }

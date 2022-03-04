@@ -1,10 +1,9 @@
 import { combineReducers } from 'redux';
-import { userLoginReducer,userRegisterReducer } from "./authReducer";
-import { createBookReducer, getListBookReducer } from './bookReducer';
+import { userLoginReducer } from "./auth/authReducer";
+import { createBookReducer, getListBookReducer } from './book/bookReducer';
 
 export const reducer = combineReducers({
   userLogin: userLoginReducer,
-  userRegister: userRegisterReducer,
   bookList: getListBookReducer,
   createBook: createBookReducer
 })

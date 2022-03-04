@@ -1,13 +1,17 @@
 import { AnyAction } from "redux";
-import * as types from "../actions/bookAction";
-import { createBookProps, ListBookProps, OneBookProps } from "../../constant/types";
+import * as types from "./bookAction";
+import {
+  createBookStates,
+  ListBookStates,
+  OneBookStates,
+} from "../../constant/types";
 
-const initialState = {} as ListBookProps;
+const initialState = {} as ListBookStates;
 
 export const getListBookReducer = (
   state = initialState,
   action: AnyAction
-): ListBookProps => {
+): ListBookStates => {
   switch (action.type) {
     case types.BOOK_LIST_REQUEST:
       return { errors: null, books: null };
@@ -21,9 +25,9 @@ export const getListBookReducer = (
 };
 
 export const createBookReducer = (
-  state = {} as createBookProps,
+  state = {} as createBookStates,
   action: AnyAction
-): createBookProps => {
+): createBookStates => {
   switch (action.type) {
     case types.BOOK_CREATE_REQUEST:
       return { errors: null, success: null };
@@ -31,6 +35,22 @@ export const createBookReducer = (
       return { errors: null, success: action.payload };
     case types.BOOK_CREATE_FAILURE:
       return { errors: action.payload, success: null };
+    default:
+      return state;
+  }
+};
+
+export const detailBookReducer = (
+  state = {} as OneBookStates,
+  action: AnyAction
+): OneBookStates => {
+  switch (action.type) {
+    case types.BOOK_DETAIL_REQUEST:
+      return { errors: null, book: null };
+    case types.BOOK_DETAIL_SUCCESS:
+      return { errors: null, book: action.payload };
+    case types.BOOK_DETAIL_FAILURE:
+      return { errors: action.payload, book: null };
     default:
       return state;
   }

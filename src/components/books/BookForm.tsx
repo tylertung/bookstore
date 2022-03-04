@@ -9,32 +9,33 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../../base/hook";
-import axios from "axios";
-import { createBook } from "../../redux/actions/bookAction";
+import { createBook } from "../../redux/book/bookAction";
 
-interface bookProps {
+interface bookStates {
   title: string;
   description: string;
   author_id: number;
 }
 
+const buttonStyle = {
+  width: "50px",
+  height: "50px",
+  backgroundColor: "#EEEEFF",
+  border: "1px solid #ADADFF",
+};
+
+const dialogStyle = {
+  minWidth: 350,
+}
+
+
 const CreateBook = () => {
-  const buttonStyle = {
-    width: "50px",
-    height: "50px",
-    backgroundColor: "#EEEEFF",
-    border: "1px solid #ADADFF",
-  };
-
-  const dialogStyle = {
-    minWidth: 350,
-  };
-
+  
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const [input, setInput] = React.useState<bookProps>({
+  const [input, setInput] = React.useState<bookStates>({
     title: "",
     description: "",
     author_id: 0,
@@ -47,13 +48,13 @@ const CreateBook = () => {
 
   const dispatch = useAppDispatch();
   const bookCreated = useAppSelector((state) => state.createBook);
-  const {errors, success} = bookCreated;
+  const { errors, success } = bookCreated;
   const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
     createBook(input)(dispatch);
   };
 
-  console.log(errors);
+  
 
   return (
     <>

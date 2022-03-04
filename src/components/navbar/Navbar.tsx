@@ -2,7 +2,7 @@ import { AppBar, Button, Toolbar, Menu, MenuItem } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../base/hook";
-import { logout } from "../../redux/actions/authAction";
+import { logout } from "../../redux/auth/authAction";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
@@ -19,8 +19,7 @@ const Navbar = () => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
 
-  const userLogin = useAppSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
+  const { userInfo } = useAppSelector((state) => state.userLogin);
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -40,7 +39,18 @@ const Navbar = () => {
   return (
     <AppBar position="sticky">
       <Toolbar>
-        <Link to="/" style={{textDecoration: 'none', flex: "1", color: "white", fontSize: "1.5rem", fontWeight: 'bold'}}>BookStore</Link>
+        <Link
+          to="/"
+          style={{
+            textDecoration: "none",
+            flex: "1",
+            color: "white",
+            fontSize: "1.5rem",
+            fontWeight: "bold",
+          }}
+        >
+          BookStore
+        </Link>
         {userInfo ? (
           <>
             <Button
@@ -67,7 +77,7 @@ const Navbar = () => {
           </>
         ) : (
           <>
-            <Link to="/sign-in" style={{textDecoration: 'none'}}>
+            <Link to="/sign-in" style={{ textDecoration: "none" }}>
               <Button
                 variant="outlined"
                 sx={{
@@ -80,7 +90,7 @@ const Navbar = () => {
                 Log in
               </Button>
             </Link>
-            <Link to="/registration" style={{textDecoration: 'none'}}>
+            <Link to="/registration" style={{ textDecoration: "none" }}>
               <Button variant="contained" color="info">
                 Sign up
               </Button>

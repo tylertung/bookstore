@@ -1,12 +1,7 @@
-import React from "react";
 import SignupForm from "../components/authentication/SignupForm";
 
 const Registration = () => {
-  return (
-    <>
-      <SignupForm />
-    </>
-  );
+  return <SignupForm />;
 };
 
 export default Registration;
