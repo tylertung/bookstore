@@ -52,3 +52,13 @@ export interface ListBookStates {
   errors: Partial<BookEr> | null;
   books: BookStates[] | null;
 }
+
+export interface GenresBookState {
+  id: string,
+  name: string
+}
+
+export interface ListGenresBookState {
+  errors?: string | null, 
+  genres: GenresBookState[] | null,
+}

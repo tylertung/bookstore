@@ -2,7 +2,7 @@ import React from "react";
 import Book from "./Book";
 import Grid from "@mui/material/Grid";
 import { useAppDispatch, useAppSelector } from "../../base/hook";
-import { getListBook, getDetailBook } from "../../redux/book/bookAction";
+import { getListBook } from "../../redux/book/bookAction";
 import { Link } from "react-router-dom";
 import * as urls from "../../constant/urlRequest";
 
@@ -11,7 +11,7 @@ function Books() {
 
   const { books } = useAppSelector((state) => state.bookList);
 
-  React.useEffect(() => {
+  React.useMemo(() => {
     getListBook()(dispatch);
   }, [dispatch]);
 
@@ -21,7 +21,7 @@ function Books() {
       alignItems="center"
       justifyContent="left"
       spacing={3}
-      sx={{ width: 3 / 4, margin: "auto", outline: "solid" }}
+      sx={{ width: 3 / 4, margin: "auto", outline: "solid", marginTop: "1rem" }}
     >
       {books?.map((book) => {
         return (

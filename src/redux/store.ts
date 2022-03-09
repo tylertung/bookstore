@@ -2,10 +2,12 @@ import { createStore } from "redux";
 import {
   createBookStates,
   ListBookStates,
+  ListGenresBookState,
   LoginStates,
   OneBookStates,
 } from "../constant/types";
 import { reducer } from "./combineReducer";
+import { getDetailUser } from "./auth/authAction";
 
 export const store = createStore(
   reducer,
@@ -17,7 +19,9 @@ export interface RootState {
   userLogin: LoginStates;
   bookList: ListBookStates;
   createBook: createBookStates;
-  oneBook: OneBookStates;
+  genresList: ListGenresBookState;
 }
+
+getDetailUser()(store.dispatch);
 
 export type AppDispatch = typeof store.dispatch;

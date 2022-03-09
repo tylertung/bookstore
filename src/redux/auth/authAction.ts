@@ -92,7 +92,18 @@ export const cleanError = () => (dispatch: AppDispatch) => {
   dispatch({ type: USER_RESET_STATE });
 };
 
-export const DETAIL_USER_REQUEST = "DETAIL_USER_REQUEST"
-export const DETAIL_USER_SUCCESS = "DETAIL_USER_SUCCESS"
-export const DETAIL_USER_FAILURE = "DETAIL_USER_FAILURE"
+export const DETAIL_USER_REQUEST = "DETAIL_USER_REQUEST";
+export const DETAIL_USER_SUCCESS = "DETAIL_USER_SUCCESS";
+export const DETAIL_USER_FAILURE = "DETAIL_USER_FAILURE";
 
+export const getDetailUser = () => {
+  return async (dispatch: AppDispatch) => {
+    dispatch({ type: DETAIL_USER_REQUEST });
+    try {
+      const response = await axiosInstance.get(`${urls.authUrl}`);
+      dispatch({ type: DETAIL_USER_SUCCESS, payload: response.data.user });
+    } catch (error: any) {
+      dispatch({ type: DETAIL_USER_FAILURE, payload: error.message });
+    }
+  };
+};

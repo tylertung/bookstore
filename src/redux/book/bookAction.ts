@@ -14,6 +14,14 @@ export const BOOK_DETAIL_REQUEST = "BOOK_DETAIL_REQUEST";
 export const BOOK_DETAIL_SUCCESS = "BOOK_DETAIL_SUCCESS";
 export const BOOK_DETAIL_FAILURE = "BOOk_DETAIL_SUCCESS";
 
+export const BOOK_LIST_GENRES_REQUEST = "BOOK_LIST_GENRES_REQUEST";
+export const BOOK_LIST_GENRES_SUCCESS = "BOOK_LIST_GENRES_SUCCESS";
+export const BOOK_LIST_GENRES_FAILURE = "BOOK_LIST_GENRES_FAILURE";
+
+export const BOOK_SEARCH_REQUEST = "BOOK_SEARCH_REQUEST";
+export const BOOK_SEARCH_SUCCESS = "BOOK_SEARCH_SUCCESS";
+export const BOOK_SEARCH_FAILURE = "BOOK_SEARCH_FAILURE";
+
 interface createBookProps {
   title: string;
   description: string;
@@ -62,11 +70,46 @@ export const getDetailBook = (id: number) => async (dispatch: AppDispatch) => {
     dispatch({
       type: BOOK_DETAIL_SUCCESS,
       payload: response.data,
-    })
+    });
   } catch (error: any) {
     dispatch({
       type: BOOK_DETAIL_FAILURE,
-      payload: error.message
-    })
+      payload: error.message,
+    });
   }
 };
+
+export const getListGenres = () => async (dispatch: AppDispatch) => {
+  dispatch({ type: BOOK_LIST_GENRES_REQUEST });
+  try {
+    const response = await axiosInstance.get(`${urls.genresUrl}`);
+    dispatch({
+      type: BOOK_LIST_GENRES_SUCCESS,
+      payload: response.data,
+    });
+  } catch (error: any) {
+    dispatch({
+      type: BOOK_LIST_GENRES_FAILURE,
+      payload: error.message,
+    });
+  }
+};
+
+export const searchByTitle =
+  (keyword: string) => async (dispatch: AppDispatch) => {
+    dispatch({ type: BOOK_SEARCH_REQUEST });
+    try {
+      const response = await axiosInstance.get(`${urls.booksUrl}`, {
+        params: { start_with: keyword },
+      });
+      dispatch({
+        type: BOOK_SEARCH_SUCCESS,
+        payload: response.data
+      })
+    } catch (error: any) {
+      dispatch({
+        type: BOOK_SEARCH_FAILURE,
+        payload: error.message,
+      });
+    }
+  };

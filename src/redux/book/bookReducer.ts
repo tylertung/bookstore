@@ -3,6 +3,7 @@ import * as types from "./bookAction";
 import {
   createBookStates,
   ListBookStates,
+  ListGenresBookState,
   OneBookStates,
 } from "../../constant/types";
 
@@ -14,11 +15,16 @@ export const getListBookReducer = (
 ): ListBookStates => {
   switch (action.type) {
     case types.BOOK_LIST_REQUEST:
-      return { errors: null, books: null };
+    case types.BOOK_SEARCH_REQUEST:
+      return { ...state };
     case types.BOOK_LIST_SUCCESS:
-      return { errors: null, books: action.payload };
+    case types.BOOK_SEARCH_SUCCESS:
+      state.books = action.payload;
+      return { ...state };
     case types.BOOK_LIST_FAILURE:
-      return { errors: action.payload, books: null };
+    case types.BOOK_SEARCH_FAILURE:
+      state.errors = action.payload;
+      return { ...state };
     default:
       return state;
   }
@@ -51,6 +57,24 @@ export const detailBookReducer = (
       return { errors: null, book: action.payload };
     case types.BOOK_DETAIL_FAILURE:
       return { errors: action.payload, book: null };
+    default:
+      return state;
+  }
+};
+
+export const listGenresReducer = (
+  state = {} as ListGenresBookState,
+  action: AnyAction
+): ListGenresBookState => {
+  switch (action.type) {
+    case types.BOOK_LIST_GENRES_REQUEST:
+      return { ...state };
+    case types.BOOK_LIST_GENRES_SUCCESS:
+      state.genres = action.payload;
+      return { ...state };
+    case types.BOOK_LIST_GENRES_FAILURE:
+      state.errors = action.payload;
+      return { ...state };
     default:
       return state;
   }

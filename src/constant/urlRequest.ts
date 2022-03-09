@@ -5,4 +5,4 @@ export const authUrl = "/auth";
 export const registerUrl = "/sign-up";
 
 export const booksUrl = "/books";
-
+export const genresUrl = "/genres"

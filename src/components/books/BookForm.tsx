@@ -5,11 +5,13 @@ import {
   DialogTitle,
   DialogContent,
   Button,
+  MenuItem,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../../base/hook";
-import { createBook } from "../../redux/book/bookAction";
+import { createBook, getListGenres } from "../../redux/book/bookAction";
+import { useNavigate } from "react-router-dom";
 
 interface bookStates {
   title: string;
@@ -26,14 +28,23 @@ const buttonStyle = {
 
 const dialogStyle = {
   minWidth: 350,
-}
-
+};
 
 const CreateBook = () => {
-  
+  const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const dispatch = useAppDispatch();
+  const { errors, success } = useAppSelector((state) => state.createBook);
+  const { genres } = useAppSelector((state) => state.genresList);
+
+  const [valueGenre, setGenre] = React.useState("Romantic");
+
+  const handleChangeGenre = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setGenre(event.target.value);
+    setInput({ ...input, [event.target.name]: event.target.value });
+  };
 
   const [input, setInput] = React.useState<bookStates>({
     title: "",
@@ -46,16 +57,21 @@ const CreateBook = () => {
     setInput({ ...input, [id]: value });
   };
 
-  const dispatch = useAppDispatch();
-  const bookCreated = useAppSelector((state) => state.createBook);
-  const { errors, success } = bookCreated;
   const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
     createBook(input)(dispatch);
+    setOpen(false);
   };
 
-  
+  React.useEffect(() => {
+    if (success) navigate(0);
+  }, [dispatch, navigate, success]);
 
+  React.useEffect(() => {
+    getListGenres()(dispatch);
+  }, [dispatch]);
+
+  console.log(input);
   return (
     <>
       <IconButton
@@ -63,6 +79,7 @@ const CreateBook = () => {
         color="primary"
         style={buttonStyle}
         onClick={handleOpen}
+        sx={{ marginTop: "1rem", marginRight: "1rem" }}
       >
         <AddIcon />
       </IconButton>
@@ -88,6 +105,22 @@ const CreateBook = () => {
             variant="standard"
             onChange={handleInput}
           />
+          <TextField
+            id="genres"
+            name="genres"
+            select
+            label="Genres"
+            value={valueGenre}
+            onChange={handleChangeGenre}
+            sx={{ marginTop: "1rem" }}
+            fullWidth
+          >
+            {genres?.map((option) => (
+              <MenuItem key={option.id} value={option.name}>
+                {option.name}
+              </MenuItem>
+            ))}
+          </TextField>
           <TextField
             autoFocus
             margin="dense"

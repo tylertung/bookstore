@@ -1,9 +1,14 @@
-import { combineReducers } from 'redux';
+import { combineReducers } from "redux";
 import { userLoginReducer } from "./auth/authReducer";
-import { createBookReducer, getListBookReducer } from './book/bookReducer';
+import {
+  createBookReducer,
+  getListBookReducer,
+  listGenresReducer,
+} from "./book/bookReducer";
 
 export const reducer = combineReducers({
   userLogin: userLoginReducer,
   bookList: getListBookReducer,
-  createBook: createBookReducer
-})
+  createBook: createBookReducer,
+  genresList: listGenresReducer,
+});
