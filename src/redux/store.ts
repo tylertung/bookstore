@@ -20,6 +20,7 @@ export interface RootState {
   bookList: ListBookStates;
   createBook: createBookStates;
   genresList: ListGenresBookState;
+  detailBook: OneBookStates;
 }
 
 getDetailUser()(store.dispatch);

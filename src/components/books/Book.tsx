@@ -11,7 +11,7 @@ interface Props {
 
 function Book({ title }: Props) {
   return (
-    <Card sx={{ maxWidth: 350, height: 350 }} className="book">
+    <Card sx={{ maxWidth: 350, height: 350 }}>
       <CardMedia component="img" height="250" image={coverBook} alt={title} />
       <CardContent>
         <Typography

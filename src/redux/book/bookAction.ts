@@ -63,13 +63,13 @@ export const getListBook = () => async (dispatch: AppDispatch) => {
   }
 };
 
-export const getDetailBook = (id: number) => async (dispatch: AppDispatch) => {
+export const getDetailBook = (id: string) => async (dispatch: AppDispatch) => {
   dispatch({ type: BOOK_DETAIL_REQUEST });
   try {
     const response = await axiosInstance.get(`${urls.booksUrl}/${id}`);
     dispatch({
       type: BOOK_DETAIL_SUCCESS,
-      payload: response.data,
+      payload: response.data.book,
     });
   } catch (error: any) {
     dispatch({

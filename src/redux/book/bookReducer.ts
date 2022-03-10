@@ -52,11 +52,13 @@ export const detailBookReducer = (
 ): OneBookStates => {
   switch (action.type) {
     case types.BOOK_DETAIL_REQUEST:
-      return { errors: null, book: null };
+      return { ...state };
     case types.BOOK_DETAIL_SUCCESS:
-      return { errors: null, book: action.payload };
+      state.book = action.payload;
+      return { ...state };
     case types.BOOK_DETAIL_FAILURE:
-      return { errors: action.payload, book: null };
+      state.errors = action.payload;
+      return { ...state };
     default:
       return state;
   }

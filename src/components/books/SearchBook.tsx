@@ -14,8 +14,12 @@ const SearchBook = () => {
 
   const handleSearch = (event: React.SyntheticEvent) => {
     event.preventDefault();
-    if (keyword !== "") searchByTitle(keyword)(dispatch);
+    searchByTitle(keyword)(dispatch);
   };
+
+  React.useEffect(() => {
+    searchByTitle(keyword)(dispatch);
+  }, [dispatch, keyword]);
 
   return (
     <Paper
