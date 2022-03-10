@@ -3,37 +3,53 @@ import { Box } from "@mui/system";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ChatIcon from "@mui/icons-material/Chat";
 import React from "react";
-import { useAppDispatch, useAppSelector } from "../../base/hook";
-import { createComment } from "../../redux/review/commentAction";
+import { useAppSelector } from "../../base/hook";
 import { useLocation } from "react-router-dom";
 import * as urls from "../../constant/urlRequest";
-import { getDetailBook } from "../../redux/book/bookAction";
+import axiosInstance from "../../base/axios";
 
-const CommentForm = () => {
+interface CommentProps {
+  checkCreated: boolean;
+  setCreated: React.Dispatch<React.SetStateAction<any>>;
+}
+
+const CommentForm = ({ checkCreated, setCreated }: CommentProps) => {
   const { userInfo } = useAppSelector((state) => state.userLogin);
   const [input, setInput] = React.useState<string>("");
 
   const location = useLocation();
-  const book_id = location.pathname.replace(`${urls.booksUrl}/`, "");
-
-  const { comment } = useAppSelector((state) => state.createComment);
-  const dispatch = useAppDispatch();
+  const book_id = React.useMemo(() => {
+    return location.pathname.replace(`${urls.booksUrl}/`, "");
+  }, [location.pathname]);
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     setInput(value);
   };
 
-  const handleSubmitComment = (event: React.SyntheticEvent) => {
-    event.preventDefault();
-    createComment(input, book_id, userInfo?.id)(dispatch);
-    setInput("");
+  const createComment = async (
+    content: string,
+    book_id: string,
+    user_id: number | undefined
+  ) => {
+    try {
+      const response = await axiosInstance.post(
+        `${urls.booksUrl}/${book_id}/comments`,
+        { comment: { content: content, book_id: book_id, user_id: user_id } }
+      );
+      console.log(response.data);
+    } catch (error: any) {
+      console.log(error.message);
+    }
   };
 
-  React.useEffect(() => {
-    if (comment) getDetailBook(book_id)(dispatch);
-  }, [dispatch, book_id, comment]);
+  const handleSubmitComment = React.useCallback(() => {
+    createComment(input, book_id, userInfo?.id);
+    setCreated(true);
+    setInput("");
+  }, [book_id, input, userInfo?.id, setCreated]);
 
+  
   return (
     <Box
       sx={{
@@ -51,7 +67,7 @@ const CommentForm = () => {
         }}
       >
         <Avatar sx={{ width: "25px", height: "25px" }}>
-          <AccountCircleIcon></AccountCircleIcon>
+          <AccountCircleIcon />
         </Avatar>
         <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
           {userInfo?.last_name}

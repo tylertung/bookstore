@@ -37,10 +37,12 @@ const CreateBook = () => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const dispatch = useAppDispatch();
-  const { errors, book } = useAppSelector((state) => state.createBook);
-  const { genres } = useAppSelector((state) => state.genresList);
 
+  const dispatch = useAppDispatch();
+
+  const { errors, book } = useAppSelector((state) => state.createBook);
+
+  const { genres } = useAppSelector((state) => state.genresList);
   const [valueGenre, setGenre] = React.useState("Romance");
 
   const handleChangeGenre = (event: React.ChangeEvent<HTMLInputElement>) => {

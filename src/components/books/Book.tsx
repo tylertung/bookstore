@@ -28,4 +28,4 @@ function Book({ title }: Props) {
   );
 }
 
-export default Book;
+export default React.memo(Book);

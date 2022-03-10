@@ -14,8 +14,8 @@ import coverBook from "../../assets/images/coverBook.jpg";
 const BookCard = () => {
   const { book } = useAppSelector((state) => state.detailBook);
 
-  const [value, setValue] = React.useState<number | null>(0);
-
+  const [value, setValue] = React.useState<number | null |undefined>(book?.rates);
+  
   return (
     <Grid
       container
@@ -80,4 +80,4 @@ const BookCard = () => {
   );
 };
 
-export default BookCard;
+export default React.memo(BookCard);

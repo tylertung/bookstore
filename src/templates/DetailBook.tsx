@@ -9,7 +9,11 @@ import { getDetailBook } from "../redux/book/bookAction";
 const DetailBook = () => {
   const dispatch = useAppDispatch();
   const location = useLocation();
-  const book_id = location.pathname.replace(`${urls.booksUrl}/`, "");
+  
+  const book_id = React.useMemo(() => {
+    return location.pathname.replace(`${urls.booksUrl}/`, "");
+  }, [location.pathname]);
+
   React.useMemo(() => {
     getDetailBook(book_id)(dispatch);
   }, [dispatch, book_id]);
@@ -22,4 +26,4 @@ const DetailBook = () => {
   );
 };
 
-export default DetailBook;
+export default React.memo(DetailBook);

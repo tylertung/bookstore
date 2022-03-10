@@ -5,7 +5,6 @@ import {
   ListGenresBookState,
   LoginStates,
   OneBookStates,
-  CommentCreateState,
 } from "../constant/types";
 import { reducer } from "./combineReducer";
 import { getDetailUser } from "./auth/authAction";
@@ -22,7 +21,6 @@ export interface RootState {
   createBook: CreateBookStates;
   genresList: ListGenresBookState;
   detailBook: OneBookStates;
-  createComment: CommentCreateState;
 }
 
 getDetailUser()(store.dispatch);

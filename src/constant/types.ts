@@ -33,7 +33,7 @@ export interface BookStates {
   author: { name: string };
   genres: [{ name: string }];
   comments: CommentProps[];
-  rates: [];
+  rates?: number | null;
 }
 
 export interface BookEr {
@@ -66,8 +66,8 @@ export interface ListGenresBookState {
   genres: GenresBookState[] | null;
 }
 
-export interface CommentCreateState {
-  comment: CommentProps | null;
+export interface CommentsState {
+  comments: CommentProps[] | null;
   errors: string | null;
 }
 

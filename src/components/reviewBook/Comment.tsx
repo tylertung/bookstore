@@ -1,7 +1,6 @@
 import { Avatar, Box, Paper, Typography } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import React from "react";
-import AccountCircle from "@mui/icons-material/AccountCircle";
 
 interface CommentProps {
   name: string;
@@ -9,6 +8,7 @@ interface CommentProps {
 }
 
 const Comment = ({ name, content }: CommentProps) => {
+  
   return (
     <Paper
       sx={{
@@ -28,7 +28,7 @@ const Comment = ({ name, content }: CommentProps) => {
         }}
       >
         <Avatar sx={{ width: "25px", height: "25px" }}>
-          <AccountCircle></AccountCircle>
+          <AccountCircleIcon/>
         </Avatar>
         <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
           {name}
@@ -43,4 +43,4 @@ const Comment = ({ name, content }: CommentProps) => {
   );
 };
 
-export default Comment;
+export default React.memo(Comment);
