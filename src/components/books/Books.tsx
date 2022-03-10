@@ -1,29 +1,19 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Book from "./Book";
 import Grid from "@mui/material/Grid";
-import CreateBook from "./CreateBook";
-
+import { useAppDispatch, useAppSelector } from "../../base/hook";
+import { getListBook } from "../../redux/book/bookAction";
+import { Link } from "react-router-dom";
+import * as urls from "../../constant/urlRequest";
 
 function Books() {
-  const [books, setBooks] = useState([
-    {
-      id: 0,
-      title: "",
-      description: "",
-      author_id: 0,
-      author: { name: "" },
-      genres: [{ name: "" }],
-    },
-  ]);
+  const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    const getBookAPI = async () => {
-      const bookAPI = await axios.get("http://localhost:3000/books");
-      setBooks(bookAPI.data);
-    };
-    getBookAPI();
-  }, []);
+  const { books } = useAppSelector((state) => state.bookList);
+
+  React.useMemo(() => {
+    getListBook()(dispatch);
+  }, [dispatch]);
 
   return (
     <Grid
@@ -31,12 +21,17 @@ function Books() {
       alignItems="center"
       justifyContent="left"
       spacing={3}
-      sx={{ width: 3 / 4, margin: "auto", outline: "solid" }}
+      sx={{ width: 3 / 4, margin: "auto", outline: "solid", marginTop: "1rem" }}
     >
-      {books.map((book) => {
+      {books?.map((book) => {
         return (
           <Grid item md={3} xs={6} sx={{ padding: "1rem" }} key={book.id}>
-            <Book title={book.title} ></Book>
+            <Link
+              to={`${urls.booksUrl}/${book.id}`}
+              style={{ textDecoration: "none" }}
+            >
+              <Book title={book.title}></Book>
+            </Link>
           </Grid>
         );
       })}

@@ -8,19 +8,29 @@ import {
   Button,
   Link,
 } from "@mui/material";
-import React, { useEffect } from "react";
+import React from "react";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../base/hook";
-import { login } from "../../redux/actions/authAction";
+import {
+  cleanError,
+  login,
+  USER_LOGIN_REQUEST,
+  USER_RESET_STATE,
+} from "../../redux/auth/authAction";
+
+export const PaperStyle = {
+  height: "70vh",
+  width: "360px",
+  margin: "20px auto",
+  padding: 20,
+};
 
 const LoginForm = () => {
-  const PaperStyle = {
-    height: "70vh",
-    width: "360px",
-    margin: "20px auto",
-    padding: 20,
-  };
+  const navigate = useNavigate();
+  const {pathname} = useLocation();
+  const dispatch = useAppDispatch();
+  const { errors, userInfo } = useAppSelector((state) => state.userLogin);
 
   const [input, setInput] = React.useState({
     email: "",
@@ -31,22 +41,20 @@ const LoginForm = () => {
     const { id, value } = event.target;
     setInput({ ...input, [id]: value });
   };
-  const navigate = useNavigate();
-
-  const dispatch = useAppDispatch();
-  const userLogin = useAppSelector((state) => state.userLogin);
-  const { errors, userInfo } = userLogin;
 
   const handleLogin = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-    dispatch(login(input));
+    await login(input)(dispatch);
   };
 
-  useEffect(() => {
-    if(userInfo)
-      navigate("/");
-  },[userInfo])
-  
+  React.useEffect(() => {
+    if (userInfo) navigate("/");
+  }, [dispatch, navigate, userInfo]);
+
+  React.useEffect(() => {
+    if (pathname !== '/sign-in') cleanError()(dispatch);
+  }, [dispatch, errors,pathname]);
+
   return (
     <Grid sx={{ marginTop: "2rem" }}>
       <Paper elevation={10} style={PaperStyle}>
@@ -66,21 +74,25 @@ const LoginForm = () => {
           </Typography>
         </Box>
         <TextField
+          error={errors != null}
           id="email"
           label="Email"
           placeholder="Enter Email"
           variant="standard"
           onChange={handleInput}
+          helperText={errors ? errors : ""}
           fullWidth
           required
         />
         <TextField
+          error={errors != null}
           id="password"
           label="Password"
           placeholder="Enter Password"
           variant="standard"
           type="password"
           onChange={handleInput}
+          helperText={errors ? errors : ""}
           fullWidth
           required
         />

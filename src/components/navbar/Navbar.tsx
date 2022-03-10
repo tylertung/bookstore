@@ -1,7 +1,9 @@
-import { AppBar, Button, Link, Toolbar, Typography } from "@mui/material";
+import { AppBar, Button, Toolbar, Menu, MenuItem } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../base/hook";
+import { logout } from "../../redux/auth/authAction";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
   buttonStyle: {
@@ -15,34 +17,67 @@ const useStyles = makeStyles({
 
 const Navbar = () => {
   const classes = useStyles();
+  const dispatch = useAppDispatch();
 
-  const userLogin = useAppSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
-  
+  const { userInfo } = useAppSelector((state) => state.userLogin);
 
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogOut = () => {
+    setAnchorEl(null);
+    logout()(dispatch);
+  };
   return (
     <AppBar position="sticky">
       <Toolbar>
         <Link
-          href="/"
-          underline="none"
-          variant="h5"
-          sx={{
+          to="/"
+          style={{
+            textDecoration: "none",
+            flex: "1",
             color: "white",
-            flexGrow: 1,
-            margin: "1rem",
+            fontSize: "1.5rem",
             fontWeight: "bold",
           }}
         >
           BookStore
         </Link>
         {userInfo ? (
-          <Button variant="contained" color="success">
-            {userInfo.first_name + " " + userInfo.last_name}
-          </Button>
+          <>
+            <Button
+              variant="contained"
+              color="success"
+              aria-controls={open ? "account-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? "true" : undefined}
+              onClick={handleClick}
+            >
+              {userInfo.first_name + " " + userInfo.last_name}
+            </Button>
+            <Menu
+              id="basic-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              MenuListProps={{
+                "aria-labelledby": "basic-button",
+              }}
+            >
+              <MenuItem onClick={handleLogOut}>Logout</MenuItem>
+            </Menu>
+          </>
         ) : (
           <>
-            <Link href="/sign-in" underline="none">
+            <Link to="/sign-in" style={{ textDecoration: "none" }}>
               <Button
                 variant="outlined"
                 sx={{
@@ -55,7 +90,7 @@ const Navbar = () => {
                 Log in
               </Button>
             </Link>
-            <Link href="/registration" underline="none">
+            <Link to="/registration" style={{ textDecoration: "none" }}>
               <Button variant="contained" color="info">
                 Sign up
               </Button>

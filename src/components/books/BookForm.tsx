@@ -5,35 +5,48 @@ import {
   DialogTitle,
   DialogContent,
   Button,
+  MenuItem,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import React from "react";
-import { useAppSelector } from "../../base/hook";
-import axios from "axios";
+import { useAppDispatch, useAppSelector } from "../../base/hook";
+import { createBook, getListGenres } from "../../redux/book/bookAction";
+import { useNavigate } from "react-router-dom";
 
-interface bookProps {
+interface bookStates {
   title: string;
   description: string;
   author_id: number;
 }
 
+const buttonStyle = {
+  width: "50px",
+  height: "50px",
+  backgroundColor: "#EEEEFF",
+  border: "1px solid #ADADFF",
+};
+
+const dialogStyle = {
+  minWidth: 350,
+};
+
 const CreateBook = () => {
-  const buttonStyle = {
-    width: "50px",
-    height: "50px",
-    backgroundColor: "#EEEEFF",
-    border: "1px solid #ADADFF",
-  };
-
-  const dialogStyle = {
-    minWidth: 350,
-  };
-
+  const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const dispatch = useAppDispatch();
+  const { errors, success } = useAppSelector((state) => state.createBook);
+  const { genres } = useAppSelector((state) => state.genresList);
 
-  const [input, setInput] = React.useState<bookProps>({
+  const [valueGenre, setGenre] = React.useState("Romantic");
+
+  const handleChangeGenre = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setGenre(event.target.value);
+    setInput({ ...input, [event.target.name]: event.target.value });
+  };
+
+  const [input, setInput] = React.useState<bookStates>({
     title: "",
     description: "",
     author_id: 0,
@@ -44,35 +57,21 @@ const CreateBook = () => {
     setInput({ ...input, [id]: value });
   };
 
-
-  const token = localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token') || '{}') : null
-
   const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      common: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    await axios
-      .post(
-        "http://localhost:3000/books",
-        {
-          book: input,
-        },
-        config
-      )
-      .then(function (response) {
-        console.log("created success");
-      })
-      .catch(function (error) {
-        console.log(error.response);
-      });
+    createBook(input)(dispatch);
+    setOpen(false);
   };
 
+  React.useEffect(() => {
+    if (success) navigate(0);
+  }, [dispatch, navigate, success]);
+
+  React.useEffect(() => {
+    getListGenres()(dispatch);
+  }, [dispatch]);
+
+  console.log(input);
   return (
     <>
       <IconButton
@@ -80,6 +79,7 @@ const CreateBook = () => {
         color="primary"
         style={buttonStyle}
         onClick={handleOpen}
+        sx={{ marginTop: "1rem", marginRight: "1rem" }}
       >
         <AddIcon />
       </IconButton>
@@ -105,6 +105,22 @@ const CreateBook = () => {
             variant="standard"
             onChange={handleInput}
           />
+          <TextField
+            id="genres"
+            name="genres"
+            select
+            label="Genres"
+            value={valueGenre}
+            onChange={handleChangeGenre}
+            sx={{ marginTop: "1rem" }}
+            fullWidth
+          >
+            {genres?.map((option) => (
+              <MenuItem key={option.id} value={option.name}>
+                {option.name}
+              </MenuItem>
+            ))}
+          </TextField>
           <TextField
             autoFocus
             margin="dense"

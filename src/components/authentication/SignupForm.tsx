@@ -11,33 +11,26 @@ import {
 } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import DateAdapter from "@mui/lab/AdapterLuxon";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { LocalizationProvider } from "@mui/lab";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import { DateTime } from "luxon";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../base/hook";
-import { register } from "../../redux/actions/authAction";
+import {
+  register,
+  cleanError,
+  USER_RESET_STATE,
+} from "../../redux/auth/authAction";
+import { PaperStyle } from "./LoginForm";
+
 const genders = [{ value: "Male" }, { value: "Female" }];
 
-interface ErrorProps {
-  first_name: String[];
-  last_name: String[];
-  dob: String[];
-  gender: String[];
-  email: String[];
-  password: String[];
-  password_confirmation: String[];
-}
-
 const SignupForm = () => {
-  const PaperStyle = {
-    height: "70vh",
-    width: "360px",
-    margin: "20px auto",
-    padding: 20,
-  };
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const { pathname } = useLocation();
+  const { errors, userInfo } = useAppSelector((state) => state.userLogin);
 
   const [valueDate, setValueDate] = React.useState<DateTime | null>(
     DateTime.now()
@@ -73,21 +66,19 @@ const SignupForm = () => {
     setInput({ ...input, [id]: value });
   };
 
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const userRegister = useAppSelector((state) => state.userLogin);
-  const { errors, userInfo } = userRegister;
   const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-    dispatch(register(input));
+    await register(input)(dispatch);
   };
 
-  useEffect(() => {
-    if(userInfo)
-      navigate('/')
-  });
+  React.useEffect(() => {
+    if (userInfo) navigate("/");
+  }, [dispatch, navigate, userInfo]);
 
-  
+  React.useEffect(() => {
+    <h1>tttt</h1>;
+  }, [dispatch, errors, pathname]);
+
   return (
     <Grid sx={{ marginTop: "2rem" }}>
       <Paper elevation={10} style={PaperStyle}>
