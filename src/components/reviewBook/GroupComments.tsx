@@ -18,6 +18,7 @@ const GroupComments = () => {
 
   const [comments, setComments] = React.useState<CommentProps[] | null>();
   const [created, setCreated] = React.useState<boolean>(false);
+  const previousCreated = React.useRef<boolean>(false);
 
   const getComment = React.useCallback(async () => {
     const response = await axiosInstance.get(
@@ -27,16 +28,21 @@ const GroupComments = () => {
   }, [book_id]);
 
   React.useEffect(() => {
-    if (created) getComment();
-
+    if (created !== previousCreated.current && created) {
+      getComment();
+    }
+    previousCreated.current = created;
     return function cleanup() {
       setCreated(false);
     };
-  }, [created, getComment]);
-  
+  }, [created, getComment, previousCreated]);
+
   React.useEffect(() => {
     getComment();
   }, [getComment]);
+
+  console.log("previous: ", previousCreated.current);
+  console.log("created: ", created);
 
   return (
     <Grid

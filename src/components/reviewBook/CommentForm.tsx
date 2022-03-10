@@ -37,7 +37,7 @@ const CommentForm = ({ checkCreated, setCreated }: CommentProps) => {
         `${urls.booksUrl}/${book_id}/comments`,
         { comment: { content: content, book_id: book_id, user_id: user_id } }
       );
-      console.log(response.data);
+      console.log("created comment");
     } catch (error: any) {
       console.log(error.message);
     }
