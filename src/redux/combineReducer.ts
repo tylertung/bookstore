@@ -6,6 +6,7 @@ import {
   getListBookReducer,
   listGenresReducer,
 } from "./book/bookReducer";
+import { createCommentReducer } from "./review/commentReducer";
 
 export const reducer = combineReducers({
   userLogin: userLoginReducer,
@@ -13,4 +14,5 @@ export const reducer = combineReducers({
   createBook: createBookReducer,
   genresList: listGenresReducer,
   detailBook: detailBookReducer,
+  createComment: createCommentReducer,
 });

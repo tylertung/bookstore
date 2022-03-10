@@ -1,7 +1,7 @@
 import { AnyAction } from "redux";
 import * as types from "./bookAction";
 import {
-  createBookStates,
+  CreateBookStates,
   ListBookStates,
   ListGenresBookState,
   OneBookStates,
@@ -31,16 +31,18 @@ export const getListBookReducer = (
 };
 
 export const createBookReducer = (
-  state = {} as createBookStates,
+  state = {} as CreateBookStates,
   action: AnyAction
-): createBookStates => {
+): CreateBookStates => {
   switch (action.type) {
     case types.BOOK_CREATE_REQUEST:
-      return { errors: null, success: null };
+      return { ...state };
     case types.BOOK_CREATE_SUCCESS:
-      return { errors: null, success: action.payload };
+      state.book = action.payload;
+      return { ...state };
     case types.BOOK_CREATE_FAILURE:
-      return { errors: action.payload, success: null };
+      state.errors = action.payload;
+      return { ...state };
     default:
       return state;
   }

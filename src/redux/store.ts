@@ -1,10 +1,11 @@
 import { createStore } from "redux";
 import {
-  createBookStates,
+  CreateBookStates,
   ListBookStates,
   ListGenresBookState,
   LoginStates,
   OneBookStates,
+  CommentCreateState,
 } from "../constant/types";
 import { reducer } from "./combineReducer";
 import { getDetailUser } from "./auth/authAction";
@@ -18,9 +19,10 @@ export const store = createStore(
 export interface RootState {
   userLogin: LoginStates;
   bookList: ListBookStates;
-  createBook: createBookStates;
+  createBook: CreateBookStates;
   genresList: ListGenresBookState;
   detailBook: OneBookStates;
+  createComment: CommentCreateState;
 }
 
 getDetailUser()(store.dispatch);

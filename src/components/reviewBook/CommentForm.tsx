@@ -7,29 +7,33 @@ import { useAppDispatch, useAppSelector } from "../../base/hook";
 import { createComment } from "../../redux/review/commentAction";
 import { useLocation } from "react-router-dom";
 import * as urls from "../../constant/urlRequest";
-interface CommentState {
-  content: string;
-}
+import { getDetailBook } from "../../redux/book/bookAction";
 
 const CommentForm = () => {
   const { userInfo } = useAppSelector((state) => state.userLogin);
-  const [input, setInput] = React.useState<CommentState>({ content: "" });
+  const [input, setInput] = React.useState<string>("");
 
   const location = useLocation();
   const book_id = location.pathname.replace(`${urls.booksUrl}/`, "");
 
+  const { comment } = useAppSelector((state) => state.createComment);
   const dispatch = useAppDispatch();
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = event.target;
-    setInput({ ...input, [id]: value });
+    const { value } = event.target;
+    setInput(value);
   };
 
-  
   const handleSubmitComment = (event: React.SyntheticEvent) => {
     event.preventDefault();
-    createComment(input.content, book_id, userInfo?.id)(dispatch);
+    createComment(input, book_id, userInfo?.id)(dispatch);
+    setInput("");
   };
+
+  React.useEffect(() => {
+    if (comment) getDetailBook(book_id)(dispatch);
+  }, [dispatch, book_id, comment]);
+
   return (
     <Box
       sx={{
@@ -57,6 +61,7 @@ const CommentForm = () => {
         id="content"
         label="comment"
         variant="outlined"
+        value={input}
         placeholder="Enter Comment for this book"
         sx={{ marginLeft: "1rem", width: "800px", borderRadius: "15px" }}
         onChange={handleInput}

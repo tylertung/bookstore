@@ -46,9 +46,9 @@ export interface OneBookStates {
   book: BookStates | null;
 }
 
-export interface createBookStates {
+export interface CreateBookStates {
   errors: Partial<BookEr> | null;
-  success: string | null;
+  book: BookStates | null;
 }
 
 export interface ListBookStates {
@@ -66,12 +66,13 @@ export interface ListGenresBookState {
   genres: GenresBookState[] | null;
 }
 
-export interface CommentState {
-  comment: string | null;
+export interface CommentCreateState {
+  comment: CommentProps | null;
   errors: string | null;
 }
 
 export interface CommentProps {
   content: string;
   username: string;
+  id: number;
 }

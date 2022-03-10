@@ -10,8 +10,11 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../../base/hook";
-import { createBook, getListGenres } from "../../redux/book/bookAction";
-import { useNavigate } from "react-router-dom";
+import {
+  createBook,
+  getListBook,
+  getListGenres,
+} from "../../redux/book/bookAction";
 
 interface bookStates {
   title: string;
@@ -31,15 +34,14 @@ const dialogStyle = {
 };
 
 const CreateBook = () => {
-  const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const dispatch = useAppDispatch();
-  const { errors, success } = useAppSelector((state) => state.createBook);
+  const { errors, book } = useAppSelector((state) => state.createBook);
   const { genres } = useAppSelector((state) => state.genresList);
 
-  const [valueGenre, setGenre] = React.useState("Romantic");
+  const [valueGenre, setGenre] = React.useState("Romance");
 
   const handleChangeGenre = (event: React.ChangeEvent<HTMLInputElement>) => {
     setGenre(event.target.value);
@@ -64,14 +66,13 @@ const CreateBook = () => {
   };
 
   React.useEffect(() => {
-    if (success) navigate(0);
-  }, [dispatch, navigate, success]);
+    if (book) getListBook()(dispatch);
+  }, [dispatch, book]);
 
   React.useEffect(() => {
     getListGenres()(dispatch);
   }, [dispatch]);
 
-  console.log(input);
   return (
     <>
       <IconButton

@@ -30,7 +30,7 @@ const GroupComments = () => {
           <Box sx={{marginTop: "1rem"}}>
             {book?.comments.map((comment) => {
               return (
-                <Comment name={comment.username} content={comment.content} />
+                <Comment name={comment.username} content={comment.content} key={comment.id}/>
               );
             })}
           </Box>
