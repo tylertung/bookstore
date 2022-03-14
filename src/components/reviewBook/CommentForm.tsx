@@ -9,11 +9,10 @@ import * as urls from "../../constant/urlRequest";
 import axiosInstance from "../../base/axios";
 
 interface CommentProps {
-  checkCreated: boolean;
   setCreated: React.Dispatch<React.SetStateAction<any>>;
 }
 
-const CommentForm = ({ checkCreated, setCreated }: CommentProps) => {
+const CommentForm = ({ setCreated }: CommentProps) => {
   const { userInfo } = useAppSelector((state) => state.userLogin);
   const [input, setInput] = React.useState<string>("");
 
@@ -49,7 +48,6 @@ const CommentForm = ({ checkCreated, setCreated }: CommentProps) => {
     setInput("");
   }, [book_id, input, userInfo?.id, setCreated]);
 
-  
   return (
     <Box
       sx={{

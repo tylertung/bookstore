@@ -23,10 +23,17 @@ const SearchBook = () => {
     [dispatch, searchByTitle, keyword]
   );
 
+  const previousState = React.useRef<number>(0);
+
   React.useEffect(() => {
     if (keyword !== "") debounceSearch(keyword);
+    previousState.current++;
   }, [keyword, debounceSearch]);
 
+  React.useEffect(() => {
+    if (keyword === "" && previousState.current !== 0) debounceSearch("");
+  }, [debounceSearch, keyword]);
+  
   return (
     <Paper
       component="form"

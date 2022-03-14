@@ -7,6 +7,7 @@ import CommentForm from "./CommentForm";
 import * as urls from "../../constant/urlRequest";
 import { CommentProps } from "../../constant/types";
 import { useLocation } from "react-router-dom";
+import { debounce } from "lodash";
 
 const GroupComments = () => {
   const { userInfo } = useAppSelector((state) => state.userLogin);
@@ -17,8 +18,8 @@ const GroupComments = () => {
   }, [location.pathname]);
 
   const [comments, setComments] = React.useState<CommentProps[] | null>();
-  const [created, setCreated] = React.useState<boolean>(false);
-  const previousCreated = React.useRef<boolean>(false);
+  const [flag, setFlag] = React.useState<boolean>(false);
+  const previousFlag = React.useRef<boolean>(false);
 
   const getComment = React.useCallback(async () => {
     const response = await axiosInstance.get(
@@ -27,23 +28,24 @@ const GroupComments = () => {
     setComments(response.data);
   }, [book_id]);
 
+  const debounceGetComment = React.useCallback(
+    debounce(() => getComment(),100),[]
+  );
+
   React.useEffect(() => {
-    if (created !== previousCreated.current && created) {
-      getComment();
+    if (flag !== previousFlag.current && flag) {
+      debounceGetComment();
     }
-    previousCreated.current = created;
+    previousFlag.current = flag;
     return function cleanup() {
-      setCreated(false);
+      setFlag(false);
     };
-  }, [created, getComment, previousCreated]);
+  }, [flag, debounceGetComment, previousFlag]);
 
   React.useEffect(() => {
-    getComment();
-  }, [getComment]);
-
-  console.log("previous: ", previousCreated.current);
-  console.log("created: ", created);
-
+    debounceGetComment();
+  }, [debounceGetComment]);
+  
   return (
     <Grid
       container
@@ -62,17 +64,15 @@ const GroupComments = () => {
           }}
           elevation={5}
         >
-          <Box>
-            {userInfo ? (
-              <CommentForm checkCreated={created} setCreated={setCreated} />
-            ) : null}
-          </Box>
+          <Box>{userInfo ? <CommentForm setCreated={setFlag} /> : null}</Box>
           <Box sx={{ marginTop: "1rem" }}>
             {comments?.map((comment: CommentProps) => {
               return (
                 <Comment
                   name={comment.username}
                   content={comment.content}
+                  id={comment.id}
+                  setFlag={setFlag}
                   key={comment.id}
                 />
               );
