@@ -33,7 +33,7 @@ const SearchBook = () => {
   React.useEffect(() => {
     if (keyword === "" && previousState.current !== 0) debounceSearch("");
   }, [debounceSearch, keyword]);
-  
+
   return (
     <Paper
       component="form"

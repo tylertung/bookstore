@@ -21,7 +21,11 @@ function Books() {
       alignItems="center"
       justifyContent="left"
       spacing={3}
-      sx={{ width: 3 / 4, margin: "auto", outline: "solid", marginTop: "1rem" }}
+      sx={{
+        width: 3 / 4,
+        margin: "auto",
+        marginTop: "1rem",
+      }}
     >
       {books?.map((book) => {
         return (

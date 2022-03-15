@@ -3,6 +3,8 @@ import Books from "../components/books/Books";
 import CreateBook from "../components/books/BookForm";
 import { useAppSelector } from "../base/hook";
 import SearchBook from "../components/books/SearchBook";
+import { Grid } from "@mui/material";
+import Filter from "../components/books/Filter";
 
 
 function Home() {
@@ -10,13 +12,16 @@ function Home() {
   const { userInfo } = userLogin;
 
   return (
-    <>
+    <React.Fragment>
       <div style={{ display: "flex", justifyContent: "center" }}>
         {userInfo?.role === "admin" ? <CreateBook /> : null}
         <SearchBook />
       </div>
-      <Books />
-    </>
+      <Grid sx={{display: "flex"}}>
+        <Filter/>
+        <Books />
+      </Grid>
+    </React.Fragment>
   );
 }
 

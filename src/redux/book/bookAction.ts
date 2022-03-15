@@ -104,7 +104,26 @@ export const searchByTitle =
     dispatch({ type: BOOK_SEARCH_REQUEST });
     try {
       const response = await axiosInstance.get(`${urls.booksUrl}`, {
-        params: { start_with: keyword },
+        params: { keyword: keyword },
+      });
+      dispatch({
+        type: BOOK_SEARCH_SUCCESS,
+        payload: response.data,
+      });
+    } catch (error: any) {
+      dispatch({
+        type: BOOK_SEARCH_FAILURE,
+        payload: error.message,
+      });
+    }
+  };
+
+export const searchByGenre =
+  (name: string) => async (dispatch: AppDispatch) => {
+    dispatch({ type: BOOK_SEARCH_REQUEST });
+    try {
+      const response = await axiosInstance.get(`${urls.booksUrl}`, {
+        params: { genre: name },
       });
       dispatch({
         type: BOOK_SEARCH_SUCCESS,

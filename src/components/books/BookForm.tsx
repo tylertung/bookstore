@@ -20,6 +20,7 @@ interface bookStates {
   title: string;
   description: string;
   author_id: number;
+  genres: string;
 }
 
 const buttonStyle = {
@@ -53,6 +54,7 @@ const CreateBook = () => {
   const [input, setInput] = React.useState<bookStates>({
     title: "",
     description: "",
+    genres: "",
     author_id: 0,
   });
 
@@ -104,6 +106,7 @@ const CreateBook = () => {
             margin="dense"
             id="description"
             label="Description"
+            multiline
             fullWidth
             variant="standard"
             onChange={handleInput}
