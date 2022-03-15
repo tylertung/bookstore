@@ -10,9 +10,9 @@ import Registration from "./templates/Registration";
 function App() {
   return (
     <Router>
-      <Layout>
+      <Layout >
         <Navbar />
-        <Routes>
+        <Routes >
           <Route path="/" element={<Home />}></Route>
           <Route path="/registration" element={<Registration />}></Route>
           <Route path="/sign-in" element={<Login />} />

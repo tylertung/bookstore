@@ -22,6 +22,10 @@ export const BOOK_SEARCH_REQUEST = "BOOK_SEARCH_REQUEST";
 export const BOOK_SEARCH_SUCCESS = "BOOK_SEARCH_SUCCESS";
 export const BOOK_SEARCH_FAILURE = "BOOK_SEARCH_FAILURE";
 
+export const DELETE_BOOK_REQUEST = "DELETE_BOOK_REQUEST";
+export const DELETE_BOOK_SUCCESS = "DELETE_BOOK_SUCCESS";
+export const DELETE_BOOK_FAILURE = "DELETE_BOOK_FAILURE";
+
 interface createBookProps {
   title: string;
   description: string;
@@ -32,12 +36,12 @@ export const createBook =
   (input: createBookProps) => async (dispatch: AppDispatch) => {
     dispatch({ type: BOOK_CREATE_REQUEST });
     try {
-      await axiosInstance.post(`${urls.booksUrl}`, {
+      const response = await axiosInstance.post(`${urls.booksUrl}`, {
         book: input,
       });
       dispatch({
         type: BOOK_CREATE_SUCCESS,
-        payload: "Created book",
+        payload: response.data,
       });
     } catch (error: any) {
       dispatch({
@@ -63,13 +67,13 @@ export const getListBook = () => async (dispatch: AppDispatch) => {
   }
 };
 
-export const getDetailBook = (id: number) => async (dispatch: AppDispatch) => {
+export const getDetailBook = (id: string) => async (dispatch: AppDispatch) => {
   dispatch({ type: BOOK_DETAIL_REQUEST });
   try {
     const response = await axiosInstance.get(`${urls.booksUrl}/${id}`);
     dispatch({
       type: BOOK_DETAIL_SUCCESS,
-      payload: response.data,
+      payload: response.data.book,
     });
   } catch (error: any) {
     dispatch({
@@ -100,12 +104,12 @@ export const searchByTitle =
     dispatch({ type: BOOK_SEARCH_REQUEST });
     try {
       const response = await axiosInstance.get(`${urls.booksUrl}`, {
-        params: { start_with: keyword },
+        params: { keyword: keyword },
       });
       dispatch({
         type: BOOK_SEARCH_SUCCESS,
-        payload: response.data
-      })
+        payload: response.data,
+      });
     } catch (error: any) {
       dispatch({
         type: BOOK_SEARCH_FAILURE,
@@ -113,3 +117,38 @@ export const searchByTitle =
       });
     }
   };
+
+export const searchByGenre =
+  (name: string) => async (dispatch: AppDispatch) => {
+    dispatch({ type: BOOK_SEARCH_REQUEST });
+    try {
+      const response = await axiosInstance.get(`${urls.booksUrl}`, {
+        params: { genre: name },
+      });
+      dispatch({
+        type: BOOK_SEARCH_SUCCESS,
+        payload: response.data,
+      });
+    } catch (error: any) {
+      dispatch({
+        type: BOOK_SEARCH_FAILURE,
+        payload: error.message,
+      });
+    }
+  };
+
+export const deleteBook = (id: string) => async (dispatch: AppDispatch) => {
+  dispatch({ type: DELETE_BOOK_REQUEST });
+  try {
+    const response = await axiosInstance.delete(`${urls.booksUrl}/${id}`);
+    dispatch({
+      type: DELETE_BOOK_SUCCESS,
+      payload: response.data,
+    });
+  } catch (error: any) {
+    dispatch({
+      type: DELETE_BOOK_FAILURE,
+      payload: error.message,
+    });
+  }
+};

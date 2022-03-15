@@ -3,6 +3,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import React from "react";
 import { useAppDispatch } from "../../base/hook";
 import { searchByTitle } from "../../redux/book/bookAction";
+import { debounce } from "lodash";
 
 const SearchBook = () => {
   const [keyword, setKeyWord] = React.useState("");
@@ -14,8 +15,24 @@ const SearchBook = () => {
 
   const handleSearch = (event: React.SyntheticEvent) => {
     event.preventDefault();
-    if (keyword !== "") searchByTitle(keyword)(dispatch);
+    debounceSearch(keyword);
   };
+
+  const debounceSearch = React.useCallback(
+    debounce((keyword: string) => searchByTitle(keyword)(dispatch), 1000),
+    [dispatch, searchByTitle, keyword]
+  );
+
+  const previousState = React.useRef<number>(0);
+
+  React.useEffect(() => {
+    if (keyword !== "") debounceSearch(keyword);
+    previousState.current++;
+  }, [keyword, debounceSearch]);
+
+  React.useEffect(() => {
+    if (keyword === "" && previousState.current !== 0) debounceSearch("");
+  }, [debounceSearch, keyword]);
 
   return (
     <Paper

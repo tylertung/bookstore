@@ -28,9 +28,12 @@ export interface LoginStates {
 export interface BookStates {
   id: number;
   title: string;
+  description: string;
   author_id: number;
   author: { name: string };
   genres: [{ name: string }];
+  comments: CommentProps[];
+  rates?: number | null;
 }
 
 export interface BookEr {
@@ -43,9 +46,9 @@ export interface OneBookStates {
   book: BookStates | null;
 }
 
-export interface createBookStates {
+export interface CreateBookStates {
   errors: Partial<BookEr> | null;
-  success: string | null;
+  book: BookStates | null;
 }
 
 export interface ListBookStates {
@@ -54,11 +57,22 @@ export interface ListBookStates {
 }
 
 export interface GenresBookState {
-  id: string,
-  name: string
+  id: string;
+  name: string;
 }
 
 export interface ListGenresBookState {
-  errors?: string | null, 
-  genres: GenresBookState[] | null,
+  errors?: string | null;
+  genres: GenresBookState[] | null;
+}
+
+export interface CommentsState {
+  comments: CommentProps[] | null;
+  errors: string | null;
+}
+
+export interface CommentProps {
+  content: string;
+  username: string;
+  id: number;
 }

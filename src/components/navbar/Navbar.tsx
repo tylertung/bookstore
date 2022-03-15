@@ -1,17 +1,13 @@
-import { AppBar, Button, Toolbar, Menu, MenuItem } from "@mui/material";
-import { makeStyles } from "@mui/styles";
-import React, { useEffect } from "react";
+import { AppBar, Button, Toolbar, Menu, MenuItem, Box } from "@mui/material";
+import React from "react";
 import { useAppDispatch, useAppSelector } from "../../base/hook";
 import { logout } from "../../redux/auth/authAction";
 import { Link } from "react-router-dom";
+import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles({
-  buttonStyle: {
-    borderRadius: 3,
-    boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
-    "&:hover": {
-      backgroundColor: "#488462 !important",
-    },
+  button: {
+    borderRadius: "25px !important",
   },
 });
 
@@ -37,20 +33,21 @@ const Navbar = () => {
     logout()(dispatch);
   };
   return (
-    <AppBar position="sticky">
+    <AppBar position="sticky" sx={{ backgroundColor: "#F7B2AD" }}>
       <Toolbar>
-        <Link
-          to="/"
-          style={{
-            textDecoration: "none",
-            flex: "1",
-            color: "white",
-            fontSize: "1.5rem",
-            fontWeight: "bold",
-          }}
-        >
-          BookStore
-        </Link>
+        <Box style={{ flex: "1" }}>
+          <Link
+            to="/"
+            style={{
+              textDecoration: "none",
+              color: "white",
+              fontSize: "1.5rem",
+              fontWeight: "bold",
+            }}
+          >
+            BookStore
+          </Link>
+        </Box>
         {userInfo ? (
           <>
             <Button
@@ -60,6 +57,7 @@ const Navbar = () => {
               aria-haspopup="true"
               aria-expanded={open ? "true" : undefined}
               onClick={handleClick}
+              className={classes.button}
             >
               {userInfo.first_name + " " + userInfo.last_name}
             </Button>
@@ -85,13 +83,17 @@ const Navbar = () => {
                   color: "white",
                   outline: "1px solid #84BC9C",
                 }}
-                className={classes.buttonStyle}
+                className={classes.button}
               >
                 Log in
               </Button>
             </Link>
-            <Link to="/registration" style={{ textDecoration: "none" }}>
-              <Button variant="contained" color="info">
+            <Link to="/registration" style={{ textDecoration: "none" }} >
+              <Button
+                variant="contained"
+                color="info"
+                className={classes.button}
+              >
                 Sign up
               </Button>
             </Link>

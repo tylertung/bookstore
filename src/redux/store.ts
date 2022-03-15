@@ -1,6 +1,6 @@
 import { createStore } from "redux";
 import {
-  createBookStates,
+  CreateBookStates,
   ListBookStates,
   ListGenresBookState,
   LoginStates,
@@ -18,8 +18,9 @@ export const store = createStore(
 export interface RootState {
   userLogin: LoginStates;
   bookList: ListBookStates;
-  createBook: createBookStates;
+  createBook: CreateBookStates;
   genresList: ListGenresBookState;
+  detailBook: OneBookStates;
 }
 
 getDetailUser()(store.dispatch);
