@@ -35,7 +35,6 @@ const useStyle = makeStyles({
 const Filter = () => {
   const classes = useStyle();
   const { genres } = useAppSelector((state) => state.genresList);
-
   const [input, setInput] = React.useState<String[]>([]);
 
   const dispatch = useAppDispatch();

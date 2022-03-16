@@ -15,12 +15,19 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import axiosInstance from "../../base/axios";
 import * as urls from "../../constant/urlRequest";
 import { useNavigate } from "react-router-dom";
+import { debounce } from "lodash";
+
 const BookCard = () => {
   const { book } = useAppSelector((state) => state.detailBook);
   const { userInfo } = useAppSelector((state) => state.userLogin);
-  const [value, setValue] = React.useState(book?.rates);
-
+  const [value, setValue] = React.useState<number | null | undefined>(0);
+  const flag = React.useRef<boolean>(false);
   const navigate = useNavigate();
+
+  const rate_id = React.useMemo(() => {
+    const rate = book?.rates.find((rate) => rate.user_id === userInfo?.id);
+    return rate?.id;
+  }, [book?.rates, userInfo?.id]);
 
   const deleteBook = async (book_id: number | undefined) => {
     try {
@@ -30,13 +37,62 @@ const BookCard = () => {
     }
   };
 
-  console.log(book?.rates)
+  const rateBook = async (
+    rateValue: number | undefined | null,
+    book_id: number | undefined
+  ) => {
+    try {
+      await axiosInstance.post(`${urls.booksUrl}/${book_id}/rates`, null, {
+        params: {
+          user_id: userInfo?.id,
+          quantity: rateValue,
+        },
+      });
+      console.log("rated successfully");
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  };
 
-  const handleClick = () => {
+  const deleteRateBook = async (
+    rate_id: number | undefined,
+    book_id: number | undefined,
+    user_id: number | undefined
+  ) => {
+    try {
+      await axiosInstance.delete(
+        `${urls.booksUrl}/${book_id}/rates/${rate_id}`,
+        { data: { user_id: user_id } }
+      );
+      console.log("unrate successfully");
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  };
+
+  const handleRate = (rateValue: number | undefined | null) => {
+    if (flag.current === false) {
+      rateBook(rateValue, book?.id);
+      flag.current = true;
+    } else {
+      if (rate_id) {
+        deleteRateBook(rate_id, book?.id, userInfo?.id);
+        flag.current = false;
+      }
+    }
+  };
+
+  const handleDelete = () => {
     deleteBook(book?.id);
     navigate("/");
   };
 
+  React.useEffect(() => {
+    setValue(book?.rate);
+  }, [book?.rate]);
+
+  console.log(flag.current);
+  console.log(value);
   return (
     <Grid
       container
@@ -83,10 +139,11 @@ const BookCard = () => {
             </Typography>
             <Rating
               name="simple-controlled"
-              value={value}
+              value={value ? value : 0}
               precision={0.1}
               onChange={(event, newValue) => {
                 setValue(newValue);
+                handleRate(newValue);
               }}
             />
             <Typography variant="h6" sx={{ fontWeight: "bold" }}>
@@ -99,7 +156,7 @@ const BookCard = () => {
           {userInfo?.role === "admin" ? (
             <IconButton
               sx={{ width: "50px", height: "50px" }}
-              onClick={handleClick}
+              onClick={handleDelete}
             >
               <DeleteIcon />
             </IconButton>

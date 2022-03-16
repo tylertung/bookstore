@@ -70,7 +70,7 @@ const CreateBook = () => {
   }, [dispatch, book]);
 
   return (
-    <>
+    <React.Fragment>
       <IconButton
         aria-label="Add book"
         color="primary"
@@ -144,7 +144,7 @@ const CreateBook = () => {
           </Button>
         </DialogContent>
       </Dialog>
-    </>
+    </React.Fragment>
   );
 };
 
