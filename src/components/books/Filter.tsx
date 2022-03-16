@@ -8,10 +8,9 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import React from "react";
-import axiosInstance from "../../base/axios";
 import { useAppDispatch, useAppSelector } from "../../base/hook";
-import * as urls from "../../constant/urlRequest";
 import { searchByGenre } from "../../redux/book/bookAction";
+
 const useStyle = makeStyles({
   root: {
     padding: "1rem",
@@ -37,17 +36,22 @@ const Filter = () => {
   const classes = useStyle();
   const { genres } = useAppSelector((state) => state.genresList);
 
-  const [input, setInput] = React.useState("");
-  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInput(event.target.value);
-  };
+  const [input, setInput] = React.useState<String[]>([]);
 
   const dispatch = useAppDispatch();
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.checked) {
+      setInput([...input, event.target.value]);
+    } else {
+      setInput(input.filter((name) => name !== event.target.value));
+    }
+  };
+
   const handleSearch = () => {
     searchByGenre(input)(dispatch);
   };
 
-  console.log(input);
   return (
     <Box className={classes.root}>
       <Button fullWidth className={classes.button} onClick={handleSearch}>
@@ -60,7 +64,13 @@ const Filter = () => {
         {genres?.map((genre) => {
           return (
             <FormControlLabel
-              control={<Checkbox onChange={handleInput} value={genre.name} />}
+              control={
+                <Checkbox
+                  value={genre.name}
+                  onChange={handleChange}
+                  id={genre.id.toString()}
+                />
+              }
               label={genre.name}
               key={genre.id}
             />

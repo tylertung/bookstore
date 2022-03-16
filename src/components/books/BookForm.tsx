@@ -10,11 +10,7 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../../base/hook";
-import {
-  createBook,
-  getListBook,
-  getListGenres,
-} from "../../redux/book/bookAction";
+import { createBook, getListBook } from "../../redux/book/bookAction";
 
 interface bookStates {
   title: string;
@@ -72,10 +68,6 @@ const CreateBook = () => {
   React.useEffect(() => {
     if (book) getListBook()(dispatch);
   }, [dispatch, book]);
-
-  React.useEffect(() => {
-    getListGenres()(dispatch);
-  }, [dispatch]);
 
   return (
     <>

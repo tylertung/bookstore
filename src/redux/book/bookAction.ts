@@ -119,11 +119,11 @@ export const searchByTitle =
   };
 
 export const searchByGenre =
-  (name: string) => async (dispatch: AppDispatch) => {
+  (name: String[]) => async (dispatch: AppDispatch) => {
     dispatch({ type: BOOK_SEARCH_REQUEST });
     try {
       const response = await axiosInstance.get(`${urls.booksUrl}`, {
-        params: { genre: name },
+        params: { genres: name },
       });
       dispatch({
         type: BOOK_SEARCH_SUCCESS,

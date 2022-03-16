@@ -2,7 +2,7 @@ import React from "react";
 import Book from "./Book";
 import Grid from "@mui/material/Grid";
 import { useAppDispatch, useAppSelector } from "../../base/hook";
-import { getListBook } from "../../redux/book/bookAction";
+import { getListBook,getListGenres } from "../../redux/book/bookAction";
 import { Link } from "react-router-dom";
 import * as urls from "../../constant/urlRequest";
 
@@ -13,6 +13,10 @@ function Books() {
 
   React.useMemo(() => {
     getListBook()(dispatch);
+  }, [dispatch]);
+
+  React.useEffect(() => {
+    getListGenres()(dispatch);
   }, [dispatch]);
 
   return (

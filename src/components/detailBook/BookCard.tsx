@@ -18,9 +18,7 @@ import { useNavigate } from "react-router-dom";
 const BookCard = () => {
   const { book } = useAppSelector((state) => state.detailBook);
   const { userInfo } = useAppSelector((state) => state.userLogin);
-  const [value, setValue] = React.useState<number | null | undefined>(
-    book?.rates
-  );
+  const [value, setValue] = React.useState(book?.rates);
 
   const navigate = useNavigate();
 
@@ -31,6 +29,8 @@ const BookCard = () => {
       console.log(error.message);
     }
   };
+
+  console.log(book?.rates)
 
   const handleClick = () => {
     deleteBook(book?.id);
