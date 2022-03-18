@@ -1,17 +1,15 @@
-import { AnyAction } from "redux";
-import * as types from "./bookAction";
-import {
-  CreateBookStates,
-  ListBookStates,
-  ListGenresBookState,
-  OneBookStates,
-} from "../../constant/types";
+import { AnyAction } from 'redux';
+
+import { CreateBookStates, ListBookStates, ListGenresBookState, OneBookStates } from '../../constant/types';
+import * as types from './bookAction';
 
 const initialState = {} as ListBookStates;
 
 export const getListBookReducer = (
   state = initialState,
-  action: AnyAction
+  action: AnyAction = {
+    type: undefined,
+  }
 ): ListBookStates => {
   switch (action.type) {
     case types.BOOK_LIST_REQUEST:
@@ -32,7 +30,9 @@ export const getListBookReducer = (
 
 export const createBookReducer = (
   state = {} as CreateBookStates,
-  action: AnyAction
+  action: AnyAction = {
+    type: undefined,
+  }
 ): CreateBookStates => {
   switch (action.type) {
     case types.BOOK_CREATE_REQUEST:
@@ -50,7 +50,9 @@ export const createBookReducer = (
 
 export const detailBookReducer = (
   state = {} as OneBookStates,
-  action: AnyAction
+  action: AnyAction = {
+    type: undefined,
+  }
 ): OneBookStates => {
   switch (action.type) {
     case types.BOOK_DETAIL_REQUEST:
@@ -68,7 +70,9 @@ export const detailBookReducer = (
 
 export const listGenresReducer = (
   state = {} as ListGenresBookState,
-  action: AnyAction
+  action: AnyAction = {
+    type: undefined,
+  }
 ): ListGenresBookState => {
   switch (action.type) {
     case types.BOOK_LIST_GENRES_REQUEST:

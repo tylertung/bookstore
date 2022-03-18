@@ -25,6 +25,45 @@ export interface LoginStates {
   userInfo: UserStates | null;
 }
 
+export interface BookEr {
+  title: string | null;
+  description: string | null;
+  author_id: string | null;
+}
+
+export interface GenresBookState {
+  id: string;
+  name: string;
+}
+
+export interface ListGenresBookState {
+  errors?: string | null;
+  genres: GenresBookState[] | null;
+}
+
+export interface CommentProps {
+  content: string;
+  username: string;
+  id: number;
+}
+
+export interface CommentsState {
+  comments: CommentProps[] | null;
+  errors: string | null;
+}
+
+export interface RateProps {
+  id: number;
+  quantity: number;
+  book_id: number;
+  user_id: number;
+}
+
+export interface RatesState {
+  rates: RateProps[] | null;
+  errors: string | null;
+}
+
 export interface BookStates {
   id: number;
   title: string;
@@ -37,11 +76,6 @@ export interface BookStates {
   rates: RateProps[];
 }
 
-export interface BookEr {
-  title: string | null;
-  description: string | null;
-  author_id: string | null;
-}
 export interface OneBookStates {
   errors: Partial<BookEr> | null;
   book: BookStates | null;
@@ -55,37 +89,4 @@ export interface CreateBookStates {
 export interface ListBookStates {
   errors: Partial<BookEr> | null;
   books: BookStates[] | null;
-}
-
-export interface GenresBookState {
-  id: string;
-  name: string;
-}
-
-export interface ListGenresBookState {
-  errors?: string | null;
-  genres: GenresBookState[] | null;
-}
-
-export interface CommentsState {
-  comments: CommentProps[] | null;
-  errors: string | null;
-}
-
-export interface CommentProps {
-  content: string;
-  username: string;
-  id: number;
-}
-
-export interface RateProps {
-  id: number;
-  quantity: number;
-  book_id: number;
-  user_id: number;
-}
-
-export interface RatesState {
-  rates: RateProps[] | null;
-  errors: string | null;
 }

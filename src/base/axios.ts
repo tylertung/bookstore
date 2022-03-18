@@ -1,6 +1,8 @@
-import axios from "axios";
-import * as urls from "../constant/urlRequest";
-import { TOKEN_KEY, RESPONSE_STATUS } from "../constant/common";
+import axios from 'axios';
+
+import { TOKEN_KEY, RESPONSE_STATUS } from '../constant/common';
+import * as urls from '../constant/urlRequest';
+
 export const axiosInstance = axios.create({
   baseURL: `${urls.baseUrl}`,
 });

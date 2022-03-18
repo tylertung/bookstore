@@ -1,18 +1,19 @@
-import React from "react";
-import { useLocation } from "react-router-dom";
-import axiosInstance from "../base/axios";
-import { useAppDispatch } from "../base/hook";
-import BookCard from "../components/detailBook/BookCard";
-import GroupComments from "../components/reviewBook/GroupComments";
-import * as urls from "../constant/urlRequest";
-import { getDetailBook } from "../redux/book/bookAction";
+import React from 'react';
 
-const DetailBook = () => {
+import { useLocation } from 'react-router-dom';
+
+import { useAppDispatch } from '../base/hook';
+import BookCard from '../components/detailBook/BookCard';
+import GroupComments from '../components/reviewBook/GroupComments';
+import * as urls from '../constant/urlRequest';
+import { getDetailBook } from '../redux/book/bookAction';
+
+function DetailBook() {
   const dispatch = useAppDispatch();
   const location = useLocation();
 
   const book_id = React.useMemo(() => {
-    return location.pathname.replace(`${urls.booksUrl}/`, "");
+    return location.pathname.replace(`${urls.booksUrl}/`, '');
   }, [location.pathname]);
 
   React.useEffect(() => {
@@ -20,11 +21,11 @@ const DetailBook = () => {
   }, [dispatch, book_id]);
 
   return (
-    <React.Fragment>
+    <>
       <BookCard />
       <GroupComments />
-    </React.Fragment>
+    </>
   );
-};
+}
 
 export default React.memo(DetailBook);

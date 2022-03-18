@@ -1,23 +1,15 @@
-import {
-  Card,
-  CardMedia,
-  Grid,
-  Paper,
-  Typography,
-  Box,
-  Rating,
-  IconButton,
-} from "@mui/material";
-import React from "react";
-import { useAppSelector } from "../../base/hook";
-import coverBook from "../../assets/images/coverBook.jpg";
-import DeleteIcon from "@mui/icons-material/Delete";
-import axiosInstance from "../../base/axios";
-import * as urls from "../../constant/urlRequest";
-import { useNavigate } from "react-router-dom";
-import { debounce } from "lodash";
+import React from 'react';
 
-const BookCard = () => {
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Card, CardMedia, Grid, Paper, Typography, Box, Rating, IconButton } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+
+import coverBook from '../../assets/images/coverBook.jpg';
+import axiosInstance from '../../base/axios';
+import { useAppSelector } from '../../base/hook';
+import * as urls from '../../constant/urlRequest';
+
+function BookCard() {
   const { book } = useAppSelector((state) => state.detailBook);
   const { userInfo } = useAppSelector((state) => state.userLogin);
   const [value, setValue] = React.useState<number | null | undefined>(0);
@@ -37,10 +29,7 @@ const BookCard = () => {
     }
   };
 
-  const rateBook = async (
-    rateValue: number | undefined | null,
-    book_id: number | undefined
-  ) => {
+  const rateBook = async (rateValue: number | undefined | null, book_id: number | undefined) => {
     try {
       await axiosInstance.post(`${urls.booksUrl}/${book_id}/rates`, null, {
         params: {
@@ -48,7 +37,7 @@ const BookCard = () => {
           quantity: rateValue,
         },
       });
-      console.log("rated successfully");
+      console.log('rated successfully');
     } catch (error: any) {
       console.log(error.message);
     }
@@ -60,11 +49,8 @@ const BookCard = () => {
     user_id: number | undefined
   ) => {
     try {
-      await axiosInstance.delete(
-        `${urls.booksUrl}/${book_id}/rates/${rate_id}`,
-        { data: { user_id: user_id } }
-      );
-      console.log("unrate successfully");
+      await axiosInstance.delete(`${urls.booksUrl}/${book_id}/rates/${rate_id}`, { data: { user_id } });
+      console.log('unrate successfully');
     } catch (error: any) {
       console.log(error.message);
     }
@@ -74,17 +60,14 @@ const BookCard = () => {
     if (flag.current === false) {
       rateBook(rateValue, book?.id);
       flag.current = true;
-    } else {
-      if (rate_id) {
-        deleteRateBook(rate_id, book?.id, userInfo?.id);
-        flag.current = false;
-      }
+    } else if (rate_id) {
+      deleteRateBook(rate_id, book?.id, userInfo?.id);
+      flag.current = false;
     }
   };
-
   const handleDelete = () => {
     deleteBook(book?.id);
-    navigate("/");
+    navigate('/');
   };
 
   React.useEffect(() => {
@@ -94,70 +77,51 @@ const BookCard = () => {
   console.log(flag.current);
   console.log(value);
   return (
-    <Grid
-      container
-      alignItems="center"
-      spacing={3}
-      sx={{ width: 3 / 4, margin: "2rem auto" }}
-      direction="row"
-    >
-      <Grid item sx={{ padding: "1rem" }}>
+    <Grid container alignItems="center" spacing={3} sx={{ width: 3 / 4, margin: '2rem auto' }} direction="row">
+      <Grid item sx={{ padding: '1rem' }}>
         <Paper
           sx={{
-            display: "flex",
-            flexDirection: "row",
-            width: "1000px",
-            borderRadius: "25px",
+            display: 'flex',
+            flexDirection: 'row',
+            width: '1000px',
+            borderRadius: '25px',
           }}
           elevation={5}
         >
-          <Card
-            sx={{ maxWidth: "300px", height: "400px", borderRadius: "25px" }}
-          >
-            <CardMedia
-              component="img"
-              height="400px"
-              image={coverBook}
-              alt={book?.title}
-            />
+          <Card sx={{ maxWidth: '300px', height: '400px', borderRadius: '25px' }}>
+            <CardMedia component="img" height="400px" image={coverBook} alt={book?.title} />
           </Card>
           <Box
             sx={{
-              "& > legend": { mt: 2 },
-              marginLeft: "3rem",
-              flex: "1",
+              '& > legend': { mt: 2 },
+              marginLeft: '3rem',
+              flex: '1',
             }}
           >
-            <Typography
-              variant="h4"
-              sx={{ fontWeight: "bold", marginTop: "1rem" }}
-            >
+            <Typography variant="h4" sx={{ fontWeight: 'bold', marginTop: '1rem' }}>
               {book?.title}
             </Typography>
-            <Typography component="legend" sx={{ fontWeight: "bold" }}>
+            <Typography component="legend" sx={{ fontWeight: 'bold' }}>
               Rating
             </Typography>
             <Rating
               name="simple-controlled"
-              value={value ? value : 0}
+              value={value || 0}
               precision={0.1}
-              onChange={(event, newValue) => {
+              onChange={(_event, newValue) => {
                 setValue(newValue);
                 handleRate(newValue);
               }}
             />
-            <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+            <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
               Description:
             </Typography>
             <Typography variant="body1" sx={{}}>
               {book?.description}
             </Typography>
           </Box>
-          {userInfo?.role === "admin" ? (
-            <IconButton
-              sx={{ width: "50px", height: "50px" }}
-              onClick={handleDelete}
-            >
+          {userInfo?.role === 'admin' ? (
+            <IconButton sx={{ width: '50px', height: '50px' }} onClick={handleDelete}>
               <DeleteIcon />
             </IconButton>
           ) : null}
@@ -165,6 +129,6 @@ const BookCard = () => {
       </Grid>
     </Grid>
   );
-};
+}
 
 export default React.memo(BookCard);

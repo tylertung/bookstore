@@ -1,6 +1,6 @@
-export const TOKEN_KEY = "TOKEN";
+export const TOKEN_KEY = 'TOKEN';
 
-export const USER_INFO = "USER_INFO";
+export const USER_INFO = 'USER_INFO';
 
 export const RESPONSE_STATUS = {
   Unauthorized: 401,

@@ -1,7 +1,7 @@
-import SignupForm from "../components/authentication/SignupForm";
+import SignupForm from '../components/authentication/SignupForm';
 
-const Registration = () => {
+function Registration() {
   return <SignupForm />;
-};
+}
 
 export default Registration;

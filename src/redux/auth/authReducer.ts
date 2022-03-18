@@ -1,6 +1,7 @@
-import { AnyAction } from "redux";
-import * as types from "./authAction";
-import { LoginStates } from "../../constant/types";
+import { AnyAction } from 'redux';
+
+import { LoginStates } from '../../constant/types';
+import * as types from './authAction';
 
 const initialState = {
   authorizing: false,
@@ -9,13 +10,15 @@ const initialState = {
 
 export const userLoginReducer = (
   state = initialState,
-  action: AnyAction
+  action: AnyAction = {
+    type: undefined,
+  }
 ): LoginStates => {
   switch (action.type) {
     case types.USER_LOGIN_REQUEST:
     case types.USER_REGISTER_REQUEST:
     case types.DETAIL_USER_REQUEST: {
-      return {...state, authorizing: true};
+      return { ...state, authorizing: true };
     }
     case types.USER_LOGIN_SUCCESS:
     case types.USER_REGISTER_SUCCESS:
@@ -37,14 +40,14 @@ export const userLoginReducer = (
       state.authorizing = false;
       state.authorized = false;
 
-      return {...state};
+      return { ...state };
     }
     case types.USER_LOGOUT: {
       state.authorized = false;
       state.errors = null;
       state.userInfo = null;
       state.authorizing = false;
-      return {...state};
+      return { ...state };
     }
     case types.USER_RESET_STATE:
       return initialState;
