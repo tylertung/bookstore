@@ -1,4 +1,4 @@
-export const baseUrl = "http://localhost:3000";
+export const baseUrl = "https://tyler-bookstore-api.herokuapp.com";
 
 export const loginUrl = "/login";
 export const authUrl = "/auth";
