@@ -1,20 +1,10 @@
-import {
-  IconButton,
-  Dialog,
-  TextField,
-  DialogTitle,
-  DialogContent,
-  Button,
-  MenuItem,
-} from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import React from "react";
-import { useAppDispatch, useAppSelector } from "../../base/hook";
-import {
-  createBook,
-  getListBook,
-  getListGenres,
-} from "../../redux/book/bookAction";
+import React from 'react';
+
+import AddIcon from '@mui/icons-material/Add';
+import { IconButton, Dialog, TextField, DialogTitle, DialogContent, Button, MenuItem } from '@mui/material';
+
+import { useAppDispatch, useAppSelector } from '../../base/hook';
+import { createBook, getListBook } from '../../redux/book/bookAction';
 
 interface bookStates {
   title: string;
@@ -24,17 +14,17 @@ interface bookStates {
 }
 
 const buttonStyle = {
-  width: "50px",
-  height: "50px",
-  backgroundColor: "#EEEEFF",
-  border: "1px solid #ADADFF",
+  width: '50px',
+  height: '50px',
+  backgroundColor: '#EEEEFF',
+  border: '1px solid #ADADFF',
 };
 
 const dialogStyle = {
   minWidth: 350,
 };
 
-const CreateBook = () => {
+function CreateBook() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -44,7 +34,7 @@ const CreateBook = () => {
   const { errors, book } = useAppSelector((state) => state.createBook);
 
   const { genres } = useAppSelector((state) => state.genresList);
-  const [valueGenre, setGenre] = React.useState("Romance");
+  const [valueGenre, setGenre] = React.useState('Romance');
 
   const handleChangeGenre = (event: React.ChangeEvent<HTMLInputElement>) => {
     setGenre(event.target.value);
@@ -52,9 +42,9 @@ const CreateBook = () => {
   };
 
   const [input, setInput] = React.useState<bookStates>({
-    title: "",
-    description: "",
-    genres: "",
+    title: '',
+    description: '',
+    genres: '',
     author_id: 0,
   });
 
@@ -73,10 +63,6 @@ const CreateBook = () => {
     if (book) getListBook()(dispatch);
   }, [dispatch, book]);
 
-  React.useEffect(() => {
-    getListGenres()(dispatch);
-  }, [dispatch]);
-
   return (
     <>
       <IconButton
@@ -84,7 +70,7 @@ const CreateBook = () => {
         color="primary"
         style={buttonStyle}
         onClick={handleOpen}
-        sx={{ marginTop: "1rem", marginRight: "1rem" }}
+        sx={{ marginTop: '1rem', marginRight: '1rem' }}
       >
         <AddIcon />
       </IconButton>
@@ -118,7 +104,7 @@ const CreateBook = () => {
             label="Genres"
             value={valueGenre}
             onChange={handleChangeGenre}
-            sx={{ marginTop: "1rem" }}
+            sx={{ marginTop: '1rem' }}
             fullWidth
           >
             {genres?.map((option) => (
@@ -135,9 +121,7 @@ const CreateBook = () => {
             fullWidth
             variant="standard"
             type="number"
-            onChange={(e) =>
-              setInput({ ...input, author_id: parseInt(e.target.value) })
-            }
+            onChange={(e) => setInput({ ...input, author_id: parseInt(e.target.value, 10) })}
             InputProps={{ inputProps: { min: 0 } }}
             required
           />
@@ -145,7 +129,7 @@ const CreateBook = () => {
             type="submit"
             color="primary"
             variant="contained"
-            sx={{ marginTop: "1rem", float: "right" }}
+            sx={{ marginTop: '1rem', float: 'right' }}
             onClick={handleSubmit}
           >
             Add
@@ -154,6 +138,6 @@ const CreateBook = () => {
       </Dialog>
     </>
   );
-};
+}
 
 export default CreateBook;

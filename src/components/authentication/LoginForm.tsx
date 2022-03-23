@@ -1,40 +1,28 @@
-import {
-  Avatar,
-  Box,
-  Grid,
-  Paper,
-  Typography,
-  TextField,
-  Button,
-  Link,
-} from "@mui/material";
-import React from "react";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { useNavigate, useLocation } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../base/hook";
-import {
-  cleanError,
-  login,
-  USER_LOGIN_REQUEST,
-  USER_RESET_STATE,
-} from "../../redux/auth/authAction";
+import React from 'react';
+
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { Avatar, Box, Grid, Paper, Typography, TextField, Button, Link } from '@mui/material';
+import { useNavigate, useLocation } from 'react-router-dom';
+
+import { useAppDispatch, useAppSelector } from '../../base/hook';
+import { cleanError, login } from '../../redux/auth/authAction';
 
 export const PaperStyle = {
-  height: "70vh",
-  width: "360px",
-  margin: "20px auto",
+  height: '70vh',
+  width: '360px',
+  margin: '20px auto',
   padding: 20,
 };
 
-const LoginForm = () => {
+function LoginForm() {
   const navigate = useNavigate();
-  const {pathname} = useLocation();
+  const { pathname } = useLocation();
   const dispatch = useAppDispatch();
   const { errors, userInfo } = useAppSelector((state) => state.userLogin);
 
   const [input, setInput] = React.useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,26 +36,26 @@ const LoginForm = () => {
   };
 
   React.useEffect(() => {
-    if (userInfo) navigate("/");
+    if (userInfo) navigate('/');
   }, [dispatch, navigate, userInfo]);
 
   React.useEffect(() => {
     if (pathname !== '/sign-in') cleanError()(dispatch);
-  }, [dispatch, errors,pathname]);
+  }, [dispatch, errors, pathname]);
 
   return (
-    <Grid sx={{ marginTop: "2rem" }}>
+    <Grid sx={{ marginTop: '2rem' }}>
       <Paper elevation={10} style={PaperStyle}>
         <Box
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
           <Avatar>
-            <AccountCircleIcon></AccountCircleIcon>
+            <AccountCircleIcon />
           </Avatar>
           <Typography variant="h4" noWrap>
             Log in
@@ -80,7 +68,7 @@ const LoginForm = () => {
           placeholder="Enter Email"
           variant="standard"
           onChange={handleInput}
-          helperText={errors ? errors : ""}
+          helperText={errors || ''}
           fullWidth
           required
         />
@@ -92,7 +80,7 @@ const LoginForm = () => {
           variant="standard"
           type="password"
           onChange={handleInput}
-          helperText={errors ? errors : ""}
+          helperText={errors || ''}
           fullWidth
           required
         />
@@ -102,18 +90,17 @@ const LoginForm = () => {
           variant="contained"
           fullWidth
           onClick={handleLogin}
-          sx={{ marginTop: "1rem" }}
+          sx={{ marginTop: '1rem' }}
         >
           Login
         </Button>
-        <Typography sx={{ marginTop: "1rem" }}>
+        <Typography sx={{ marginTop: '1rem' }}>
           <Link href="/" underline="none">
             Forgot your password?
           </Link>
         </Typography>
         <Typography>
-          {" "}
-          Don't have account?
+          Don&apos;t have account?
           <Link href="/sign-in" underline="none">
             Sign up
           </Link>
@@ -121,6 +108,6 @@ const LoginForm = () => {
       </Paper>
     </Grid>
   );
-};
+}
 
-export default LoginForm;
+export default React.memo(LoginForm);

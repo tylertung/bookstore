@@ -1,12 +1,14 @@
-import { Paper, InputBase, IconButton } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
-import React from "react";
-import { useAppDispatch } from "../../base/hook";
-import { searchByTitle } from "../../redux/book/bookAction";
-import { debounce } from "lodash";
+import React from 'react';
 
-const SearchBook = () => {
-  const [keyword, setKeyWord] = React.useState("");
+import SearchIcon from '@mui/icons-material/Search';
+import { Paper, InputBase, IconButton } from '@mui/material';
+import { debounce } from 'lodash';
+
+import { useAppDispatch } from '../../base/hook';
+import { searchByTitle } from '../../redux/book/bookAction';
+
+function SearchBook() {
+  const [keyword, setKeyWord] = React.useState('');
   const dispatch = useAppDispatch();
 
   const handleKeyWord = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,41 +28,36 @@ const SearchBook = () => {
   const previousState = React.useRef<number>(0);
 
   React.useEffect(() => {
-    if (keyword !== "") debounceSearch(keyword);
-    previousState.current++;
+    if (keyword !== '') debounceSearch(keyword);
+    previousState.current += 1;
   }, [keyword, debounceSearch]);
 
   React.useEffect(() => {
-    if (keyword === "" && previousState.current !== 0) debounceSearch("");
+    if (keyword === '' && previousState.current !== 0) debounceSearch('');
   }, [debounceSearch, keyword]);
 
   return (
     <Paper
       component="form"
       sx={{
-        p: "2px 4px",
-        display: "flex",
-        alignItems: "center",
+        p: '2px 4px',
+        display: 'flex',
+        alignItems: 'center',
         width: 400,
-        marginTop: "1rem",
+        marginTop: '1rem',
       }}
     >
       <InputBase
         sx={{ ml: 1, flex: 1 }}
         placeholder="Search by Title"
-        inputProps={{ "aria-label": "search by title" }}
+        inputProps={{ 'aria-label': 'search by title' }}
         onChange={handleKeyWord}
       />
-      <IconButton
-        type="submit"
-        sx={{ p: "10px" }}
-        aria-label="search"
-        onClick={handleSearch}
-      >
+      <IconButton type="submit" sx={{ p: '10px' }} aria-label="search" onClick={handleSearch}>
         <SearchIcon />
       </IconButton>
     </Paper>
   );
-};
+}
 
 export default SearchBook;
