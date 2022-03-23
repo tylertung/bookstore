@@ -110,4 +110,4 @@ function LoginForm() {
   );
 }
 
-export default LoginForm;
+export default React.memo(LoginForm);

@@ -12,8 +12,9 @@ import * as urls from '../../constant/urlRequest';
 function BookCard() {
   const { book } = useAppSelector((state) => state.detailBook);
   const { userInfo } = useAppSelector((state) => state.userLogin);
-  const [value, setValue] = React.useState<number | null | undefined>(0);
+  const [valueRate, setValueRate] = React.useState<number | null | undefined>(0);
   const flag = React.useRef<boolean>(false);
+  const previousValueRate = React.useRef<number | null | undefined>(valueRate);
   const navigate = useNavigate();
 
   const rate_id = React.useMemo(() => {
@@ -29,19 +30,21 @@ function BookCard() {
     }
   };
 
-  const rateBook = async (rateValue: number | undefined | null, book_id: number | undefined) => {
-    try {
-      await axiosInstance.post(`${urls.booksUrl}/${book_id}/rates`, null, {
-        params: {
-          user_id: userInfo?.id,
-          quantity: rateValue,
-        },
-      });
-      console.log('rated successfully');
-    } catch (error: any) {
-      console.log(error.message);
-    }
-  };
+  const rateBook = React.useCallback(
+    async (rateValue: number | undefined | null, book_id: number | undefined) => {
+      try {
+        await axiosInstance.post(`${urls.booksUrl}/${book_id}/rates`, null, {
+          params: {
+            user_id: userInfo?.id,
+            quantity: rateValue,
+          },
+        });
+      } catch (error: any) {
+        console.log(error.message);
+      }
+    },
+    [userInfo?.id]
+  );
 
   const deleteRateBook = async (
     rate_id: number | undefined,
@@ -50,32 +53,34 @@ function BookCard() {
   ) => {
     try {
       await axiosInstance.delete(`${urls.booksUrl}/${book_id}/rates/${rate_id}`, { data: { user_id } });
-      console.log('unrate successfully');
     } catch (error: any) {
       console.log(error.message);
     }
   };
 
-  const handleRate = (rateValue: number | undefined | null) => {
-    if (flag.current === false) {
-      rateBook(rateValue, book?.id);
-      flag.current = true;
-    } else if (rate_id) {
+  const handleRate = (rate: number | null | undefined) => {
+    setValueRate(rate);
+    previousValueRate.current = valueRate;
+    if (rate_id && flag.current) {
       deleteRateBook(rate_id, book?.id, userInfo?.id);
       flag.current = false;
     }
+    if (flag.current === false && book?.id && previousValueRate.current !== rate && !rate_id && rate! > 0) {
+      rateBook(rate, book?.id);
+      flag.current = true;
+    }
   };
+
   const handleDelete = () => {
     deleteBook(book?.id);
     navigate('/');
   };
 
   React.useEffect(() => {
-    setValue(book?.rate);
-  }, [book?.rate]);
+    setValueRate(book?.rate);
+    if (rate_id) flag.current = true;
+  }, [book?.rate, rate_id]);
 
-  console.log(flag.current);
-  console.log(value);
   return (
     <Grid container alignItems="center" spacing={3} sx={{ width: 3 / 4, margin: '2rem auto' }} direction="row">
       <Grid item sx={{ padding: '1rem' }}>
@@ -106,10 +111,9 @@ function BookCard() {
             </Typography>
             <Rating
               name="simple-controlled"
-              value={value || 0}
+              value={valueRate || 0}
               precision={0.1}
               onChange={(_event, newValue) => {
-                setValue(newValue);
                 handleRate(newValue);
               }}
             />
